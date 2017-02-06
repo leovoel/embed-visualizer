@@ -5,12 +5,12 @@ export default {
     if (data.embed && data.content) {
       return (
         `const embed = ${JSON.stringify(data.embed, null, '  ')};\n` +
-        `channel.sendMessage(${JSON.stringify(data.content)}, embed);`
+        `channel.send(${JSON.stringify(data.content)}, { embed });`
       );
     } else if (data.embed) {
       return `const embed = ${JSON.stringify(data.embed, null, '  ')};\nchannel.sendEmbed(embed);`;
     }
 
-    return `channel.sendMessage(${JSON.stringify(data.content)})`;
+    return `channel.send(${JSON.stringify(data.content)})`;
   }
 };
