@@ -8,7 +8,7 @@ export default {
         `channel.sendMessage(${JSON.stringify(data.content)}, embed);`
       );
     } else if (data.embed) {
-      return `const embed = ${JSON.stringify(data.embed, null, ' ')};\nchannel.sendEmbed(embed);`;
+      return `const embed = ${JSON.stringify(data.embed, null, '  ')};\nchannel.sendEmbed(embed);`;
     }
 
     return `channel.sendMessage(${JSON.stringify(data.content)})`;
