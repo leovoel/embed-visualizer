@@ -4,7 +4,7 @@
   "license": "MIT",
   "version": "0.1.0",
   "private": true,
-  "package": "https://leovoel.github.io/embed-visualizer",
+  "homepage": "https://leovoel.github.io/embed-visualizer/",
   "devDependencies": {
     "react-scripts": "0.8.5",
     "rimraf": "^2.5.4"
