@@ -60,7 +60,7 @@ const initialCode = JSON.stringify({
       { name: '<:thonkang:219069250692841473>', value: '???' }
     ]
   }
-}, null, '   ');
+}, null, '  ');
 
 const App = React.createClass({
   // TODO: serialize input and webhookMode to query string?

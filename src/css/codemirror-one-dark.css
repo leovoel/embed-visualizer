@@ -8,10 +8,9 @@
 /* UI Theme /----------------------------------------------------------------------------------- */
 
 .cm-s-one-dark .CodeMirror, .cm-s-one-dark .CodeMirror-scroll {
-  font-family: 'consolas';
+  font-family: Consolas, Monaco, monospace;
   font-weight: 300;
   font-size: 14px;
-
   background-color: hsl(220, 13%, 18%);
   color: hsl(220, 14%, 71%);
 }
@@ -44,7 +43,7 @@
 }
 /* ...folding addon: fold/...  */
 .cm-s-one-dark .CodeMirror-foldmarker {
-  font-family: 'Consolas';
+  font-family: Consolas, Monaco, monospace;
   line-height: .3;
   cursor: pointer;
   color: hsl(220, 14%, 71%);

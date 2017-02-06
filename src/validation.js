@@ -15,7 +15,7 @@ function traverseObject(object, path) {
 
       if (array !== undefined || array !== null) {
         if (indexStart !== -1 && indexEnd !== -1) {
-          const index = parseInt(fragment.slice(indexStart + 1, indexEnd));
+          const index = parseInt(fragment.slice(indexStart + 1, indexEnd), 10);
           const element = array[index];
 
           if (element === undefined || element === null) {

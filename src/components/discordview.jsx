@@ -40,7 +40,7 @@ const DiscordViewWrapper = ({ dark, children }) => {
   // but copying directly from discord is a lot easier than that
   return (
     <div className="w-100 h-100 overflow-auto pa2">
-      <div className={`flex-vertical ${dark && 'theme-dark'}`}>
+      <div className={`flex-vertical whitney ${dark && 'theme-dark'}`}>
         <div className="chat flex-vertical flex-spacer">
           <div className="content flex-spacer flex-horizontal">
             <div className="flex-spacer flex-vertical messages-wrapper">
@@ -73,7 +73,7 @@ const DiscordView = React.createClass({
     const { username, avatar_url, error, data: { content, embed, embeds} } = this.props;
 
     const bgColor = this.props.dark ? 'bg-discord-dark' : 'bg-discord-light';
-    const cls = `w-100 h-100 br2 flex flex-column white ${bgColor}`;
+    const cls = `w-100 h-100 br2 flex flex-column white overflow-hidden ${bgColor}`;
 
     return (
       <div className={cls}>

@@ -26,6 +26,18 @@ const CodeMirror = React.createClass({
         mode: { name: 'javascript', json: true },
         autoCloseBrackets: true,
         matchBrackets: true,
+        tabSize: 2,
+        extraKeys: {
+          // see https://github.com/codemirror/CodeMirror/issues/988
+          Tab: function(cm) {
+            if (cm.somethingSelected()) {
+              cm.indentSelection('add');
+              return;
+            }
+
+            cm.execCommand("insertSoftTab");
+          }
+        },
         viewportMargin: Infinity,
         theme: 'one-dark'
       },
