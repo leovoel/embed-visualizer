@@ -1,0 +1,178 @@
+@import './tachyons.css';
+@import './codemirror-one-dark.css';
+
+/* -- colors -- */
+
+.blurple            { color:            #7289DA; }
+.bg-blurple         { background-color: #7289DA; }
+.red                { color:            #F04747; }
+.bg-red             { background-color: #F04747; }
+.bg-discord-light   { background-color: #ffffff; }
+.bg-discord-dark    { background-color: #36393e; }
+
+/* -- colors -- */
+
+/* -- box shadow -- */
+
+.shadow-1 { box-shadow: 0 2px  8px  rgba(0, 0, 0, 0.3); }
+.shadow-2 { box-shadow: 0 5px  15px rgba(0, 0, 0, 0.3); }
+.shadow-3 { box-shadow: 0 14px 25px rgba(0, 0, 0, 0.4); }
+.shadow-4 { box-shadow: 0 28px 50px rgba(0, 0, 0, 0.4); }
+
+/* -- box shadow -- */
+
+/* -- hover -- */
+
+[class *= 'shadow-hover'] { transition: box-shadow 0.5s ease; }
+.shadow-hover-1:hover, .shadow-hover-1:focus { box-shadow: 0 2px  8px  rgba(0, 0, 0, 0.3); }
+.shadow-hover-2:hover, .shadow-hover-2:focus { box-shadow: 0 5px  15px rgba(0, 0, 0, 0.3); }
+.shadow-hover-3:hover, .shadow-hover-3:focus { box-shadow: 0 14px 25px rgba(0, 0, 0, 0.4); }
+.shadow-hover-4:hover, .shadow-hover-4:focus { box-shadow: 0 28px 50px rgba(0, 0, 0, 0.4); }
+
+.shadow-up-hover { position: relative; top: 0; transition: box-shadow 0.1s ease, top 0.1s ease; }
+.shadow-up-hover:hover, .shadow-up-hover:active { top: -.1rem; }
+
+/* -- hover -- */
+
+/* -- misc -- */
+
+.pre-wrap { white-space: pre-wrap; }
+.resize-none { resize: none; }
+.open-sans { font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+/* -- misc -- */
+
+/* -- modal -- */
+
+.modal-enter { opacity: 0; }
+.modal-enter .inner { transform: scale(0.5); }
+
+.modal-enter-active { animation: fade-in 190ms ease-out; }
+.modal-enter-active .inner { animation: zoom-in 190ms ease-in-out; }
+
+.modal-leave { opacity: 1; }
+.modal-leave .inner { transform: scale(1); }
+
+.modal-leave-active { animation: fade-out 190ms ease-in; }
+.modal-leave-active .inner { animation: zoom-out 190ms ease-in; }
+
+@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes zoom-out {
+  0% { transform: scale(1); }
+  20% { transform: scale(0.95); }
+  100% { transform: scale(0.1); }
+}
+
+@keyframes zoom-in {
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* -- modal -- */
+
+/* -- codemirror -- */
+
+.CodeMirror {
+  height: 100%;
+  border-radius: .25rem;
+  z-index: 0;
+}
+
+/* -- codemirror -- */
+
+/* -- highlight.js -- */
+
+/*
+
+we use a different class name here since
+we'd like to keep the code blocks for the discord view
+the same as they would be in the actual application
+---------------------------------------------------
+*/
+
+/*!
+Atom One Dark by Daniel Gamage
+Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
+*/
+
+.atom-one-dark {
+  display: block !important;
+  overflow-x: auto !important;
+  padding: 0.5em !important;
+  color: #abb2bf !important;
+  background: #282c34 !important;
+}
+
+.atom-one-dark > .hljs-comment,
+.atom-one-dark > .hljs-quote {
+  color: #5c6370;
+  font-style: italic;
+}
+
+.atom-one-dark > .hljs-doctag,
+.atom-one-dark > .hljs-keyword,
+.atom-one-dark > .hljs-formula {
+  color: #c678dd;
+}
+
+.atom-one-dark > .hljs-section,
+.atom-one-dark > .hljs-name,
+.atom-one-dark > .hljs-selector-tag,
+.atom-one-dark > .hljs-deletion,
+.atom-one-dark > .hljs-subst {
+  color: #e06c75;
+}
+
+.atom-one-dark > .hljs-literal {
+  color: #56b6c2;
+}
+
+.atom-one-dark > .hljs-string,
+.atom-one-dark > .hljs-regexp,
+.atom-one-dark > .hljs-addition,
+.atom-one-dark > .hljs-attribute,
+.atom-one-dark > .hljs-meta-string {
+  color: #98c379;
+}
+
+.atom-one-dark > .hljs-built_in,
+.atom-one-dark > .hljs-class .hljs-title {
+  color: #e6c07b;
+}
+
+.atom-one-dark > .hljs-attr,
+.atom-one-dark > .hljs-variable,
+.atom-one-dark > .hljs-template-variable,
+.atom-one-dark > .hljs-type,
+.atom-one-dark > .hljs-selector-class,
+.atom-one-dark > .hljs-selector-attr,
+.atom-one-dark > .hljs-selector-pseudo,
+.atom-one-dark > .hljs-number {
+  color: #d19a66;
+}
+
+.atom-one-dark > .hljs-symbol,
+.atom-one-dark > .hljs-bullet,
+.atom-one-dark > .hljs-link,
+.atom-one-dark > .hljs-meta,
+.atom-one-dark > .hljs-selector-id,
+.atom-one-dark > .hljs-title {
+  color: #61aeee;
+}
+
+.atom-one-dark > .hljs-emphasis {
+  font-style: italic;
+}
+
+.atom-one-dark > .hljs-strong {
+  font-weight: bold;
+}
+
+.atom-one-dark > .hljs-link {
+  text-decoration: underline;
+}
+
+/* -- highlight.js -- */
