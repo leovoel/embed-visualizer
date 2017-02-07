@@ -79,8 +79,8 @@ const embedSchema = {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "name": { "type": "string", "maxLength": 256 },
-          "value": { "type": "string", "maxLength": 1024 },
+          "name": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "value": { "type": "string", "minLength": 1, "maxLength": 1024 },
           "inline": { "type": "boolean" }
         }
       }
