@@ -45,6 +45,7 @@ const initialCode = JSON.stringify({
     url: 'https://discordapp.com',
     color: Math.floor(Math.random() * 0xFFFFFF),
     timestamp: new Date().toISOString(),
+    video: '',
     footer: { icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png', text: 'footer text' },
     thumbnail: { url: 'https://cdn.discordapp.com/embed/avatars/0.png' },
     image: { url: 'https://cdn.discordapp.com/embed/avatars/0.png' },

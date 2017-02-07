@@ -105,7 +105,7 @@ function registerKeywords(ajv) {
 
       function disallowOne(data) {
         for (const property of disallowedProperties) {
-          if (data[property]) {
+          if (data[property] !== undefined) {
             disallowOne.errors = [];
             pushError(disallowOne.errors, property);
             return false;
@@ -119,7 +119,7 @@ function registerKeywords(ajv) {
         const errors = [];
 
         for (const property of disallowedProperties) {
-          if (data[property]) {
+          if (data[property] !== undefined) {
             pushError(errors, property);
           }
         }
