@@ -421,7 +421,6 @@ const rulesWithoutMaskedLinks = createRules({
 
 // used in:
 //  message content (non-webhook mode)
-//  embed field names
 const parse = parserFor(rulesWithoutMaskedLinks);
 
 // used in:
@@ -432,6 +431,7 @@ const parseAllowLinks = parserFor(createRules(baseRules));
 
 // used in:
 //  embed title (obviously)
+//  embed field names
 const parseEmbedTitle = parserFor(
   omit(rulesWithoutMaskedLinks, ['codeBlock', 'br', 'mention', 'channel', 'roleMention'])
 );

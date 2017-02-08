@@ -68,7 +68,7 @@ const EmbedField = ({ name, value, inline }) => {
 
   const cls = 'embed-field' + (inline ? ' embed-field-inline' : '');
 
-  const fieldName = name ? (<div className="embed-field-name">{parse(name)}</div>) : null;
+  const fieldName = name ? (<div className="embed-field-name">{parseEmbedTitle(name)}</div>) : null;
   const fieldValue = value ? (<div className="embed-field-value markup">{parseAllowLinks(value)}</div>) : null;
 
   return <div className={cls}>{fieldName}{fieldValue}</div>;
