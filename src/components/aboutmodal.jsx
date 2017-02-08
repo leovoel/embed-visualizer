@@ -67,6 +67,16 @@ The main difference is that instead of:
   This is purely out of laziness, although there's not much that can go wrong with them.  
   Keep in mind that in embeds, mentions are rendered but do not notify anyone.
 
+- Images may not render exactly the same
+
+  There is some logic for limiting sizes when rendering,
+  that is hard to replicate due to the way this was written.
+
+  It is probably possible to get it to work, but I don't
+  think it's worth the effort (especially to reverse-engineer it out of the client).
+
+  I don't also know if it's even necessary, hard to tell.
+
 - JSON data is not exactly the actual data you can send
 
   It's not that it's wrong (it may be at some point in the future, but that's not a problem),
