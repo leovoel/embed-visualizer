@@ -1,6 +1,6 @@
 import React from 'react';
 import Moment from 'moment';
-import { parse, parseAllowLinks } from './markdown';
+import { parse, parseAllowLinks, parseEmbedTitle } from './markdown';
 
 
 const Link = ({ children, ...props}) => {
@@ -29,7 +29,7 @@ const EmbedTitle = ({ title, url }) => {
 
   let computed = <span className="embed-title">{title}</span>;
   if (url) {
-    computed = <Link href={url} className="embed-title">{parse(title)}</Link>;
+    computed = <Link href={url} className="embed-title">{parseEmbedTitle(title)}</Link>;
   }
 
   return computed;

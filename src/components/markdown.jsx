@@ -128,6 +128,16 @@ function parserFor(rules, returnAst) {
   }
 }
 
+function omit(object, excluded) {
+  return Object.keys(object).reduce((result, key) => {
+    if (excluded.indexOf(key) === -1) {
+      result[key] = object[key];
+    }
+
+    return result;
+  }, {});
+}
+
 // emoji stuff
 
 const getEmoteURL = (emote) => `${location.protocol}//cdn.discordapp.com/emojis/${emote.id}.png`;
@@ -399,11 +409,7 @@ function createRules(r) {
   };
 }
 
-// used in:
-//  message content (non-webhook mode)
-//  embed title
-//  embed field names
-const parse = parserFor(createRules({
+const rulesWithoutMaskedLinks = createRules({
   ...baseRules,
   link: {
     ...baseRules.link,
@@ -411,13 +417,24 @@ const parse = parserFor(createRules({
       return null;
     }
   }
-}));
+});
+
+// used in:
+//  message content (non-webhook mode)
+//  embed field names
+const parse = parserFor(rulesWithoutMaskedLinks);
 
 // used in:
 //  message content (webhook mode)
 //  embed description
 //  embed field values
 const parseAllowLinks = parserFor(createRules(baseRules));
+
+// used in:
+//  embed title (obviously)
+const parseEmbedTitle = parserFor(
+  omit(rulesWithoutMaskedLinks, ['codeBlock', 'br', 'mention', 'channel', 'roleMention'])
+);
 
 // used in:
 //  message content
@@ -453,4 +470,4 @@ function jumboify(ast) {
 }
 
 
-export { parse, parseAllowLinks, jumboify };
+export { parse, parseAllowLinks, parseEmbedTitle, jumboify };
