@@ -1,6 +1,6 @@
 import React from 'react';
 import Moment from 'moment';
-import { parse, parseAllowLinks, parseEmbedTitle } from './markdown';
+import { parseAllowLinks, parseEmbedTitle } from './markdown';
 
 
 const Link = ({ children, ...props}) => {

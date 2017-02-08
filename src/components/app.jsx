@@ -63,11 +63,13 @@ const initialCode = JSON.stringify({
 }, null, '  ');
 
 const App = React.createClass({
-  // TODO: serialize input and webhookMode to query string?
+  // TODO: serialize input, webhookMode, compactMode and darkTheme to query string?
 
   getInitialState() {
     return {
       webhookMode: false,
+      compactMode: false,
+      darkTheme: true,
       currentModal: null,
       input: initialCode,
       data: {},
@@ -133,8 +135,18 @@ const App = React.createClass({
     this.validateInput(this.state.input, !this.state.webhookMode);
   },
 
+  toggleTheme() {
+    this.setState({ darkTheme: !this.state.darkTheme });
+  },
+
+  toggleCompactMode() {
+    this.setState({ compactMode: !this.state.compactMode });
+  },
+
   render() {
     const webhookModeLabel = `${this.state.webhookMode ? 'Dis' : 'En'}able webhook mode`;
+    const themeLabel = `${this.state.darkTheme ? 'Light' : 'Dark'} theme`;
+    const compactModeLabel = `${this.state.compactMode ? 'Cozy' : 'Compact'} mode`;
 
     return (
       <main className="vh-100-l bg-blurple open-sans">
@@ -149,6 +161,8 @@ const App = React.createClass({
                 data={this.state.data}
                 error={this.state.error}
                 webhookMode={this.state.webhookMode}
+                darkTheme={this.state.darkTheme}
+                compactMode={this.state.compactMode}
               />
             </div>
           </section>
@@ -156,6 +170,8 @@ const App = React.createClass({
           <footer className="w-100 pa3 tc white">
             <FooterButton label="Generate code" onClick={this.openCodeModal} />
             <FooterButton label={webhookModeLabel} onClick={this.toggleWebhookMode} />
+            <FooterButton label={themeLabel} onClick={this.toggleTheme} />
+            <FooterButton label={compactModeLabel} onClick={this.toggleCompactMode} />
             <FooterButton label="About" onClick={this.openAboutModal} />
           </footer>
         </div>
