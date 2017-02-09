@@ -51,6 +51,8 @@ The main difference is that instead of:
 }
 \`\`\`
 
+...and that you can also use masked links - i.e. \`[title](url)\` - on the message content.
+
 ### Caveats
 
 -----------

@@ -1,7 +1,7 @@
 import React from 'react';
 import Moment from 'moment';
 import Embed from './embed';
-import { parse, jumboify } from './markdown';
+import { parse, parseAllowLinks, jumboify } from './markdown';
 
 
 const MessageTimestamp = React.createClass({
@@ -33,7 +33,7 @@ const MessageTimestamp = React.createClass({
   },
 });
 
-const MessageBody = ({ compactMode, username, content }) => {
+const MessageBody = ({ compactMode, username, content, webhookMode }) => {
   if (compactMode) {
     return (
       <div className="markup">
@@ -47,6 +47,10 @@ const MessageBody = ({ compactMode, username, content }) => {
       </div>
     );
   } else if (content) {
+    if (webhookMode) {
+      return <div className="markup">{parseAllowLinks(content, true, {}, jumboify)}</div>;
+    }
+
     return <div className="markup">{parse(content, true, {}, jumboify)}</div>;
   }
 
@@ -124,8 +128,9 @@ const DiscordView = React.createClass({
 
   render() {
     const {
-      compactMode, darkTheme, username, avatar_url, error,
-      data: { content, embed, embeds}
+      compactMode, darkTheme, webhookMode,
+      username, avatar_url, error,
+      data: { content, embed, embeds }
     } = this.props;
 
     const bgColor = darkTheme ? 'bg-discord-dark' : 'bg-discord-light';
@@ -141,7 +146,12 @@ const DiscordView = React.createClass({
               <div className="message first">
                 <CozyMessageHeader username={username} compactMode={compactMode} />
                 <div className="message-text">
-                  <MessageBody content={content} username={username} compactMode={compactMode} />
+                  <MessageBody
+                    content={content}
+                    username={username}
+                    compactMode={compactMode}
+                    webhookMode={webhookMode}
+                  />
                 </div>
                 {embed ? <Embed {...embed} /> : (embeds && embeds.map((e, i) => <Embed key={i} {...e} />))}
               </div>
