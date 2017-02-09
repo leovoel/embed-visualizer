@@ -27,7 +27,7 @@ const EmbedTitle = ({ title, url }) => {
     return null;
   }
 
-  let computed = <span className="embed-title">{title}</span>;
+  let computed = <span className="embed-title">{parseEmbedTitle(title)}</span>;
   if (url) {
     computed = <Link href={url} className="embed-title">{parseEmbedTitle(title)}</Link>;
   }
