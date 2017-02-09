@@ -47,6 +47,16 @@ const customMessages = {
     return result;
   },
 
+  minProperties(data, e) {
+    const dataPath = e.dataPath.slice(1);
+
+    if (e.params.limit === 1) {
+      return `${dataPath} should NOT be empty`;
+    }
+
+    return `${dataPath} ${e.message}`;
+  },
+
   minLength(data, e) {
     const dataPath = e.dataPath.slice(1);
 

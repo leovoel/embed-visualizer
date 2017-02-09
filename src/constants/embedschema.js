@@ -23,10 +23,11 @@ const embedSchema = {
   "type": "object",
   "additionalProperties": false,
   "disallowed": ["type", "provider", "video"],
+  "minProperties": 1,
   "properties": {
-    "title": { "type": "string", "maxLength": 256 },
+    "title": { "type": "string", "minLength": 1, "maxLength": 256 },
     "url": { "type": "string" },
-    "description": { "type": "string", "maxLength": 2048 },
+    "description": { "type": "string", "minLength": 1, "maxLength": 2048 },
     "timestamp": { "type": "string", "pattern": ISO_8601.source },
     "color": { "type": "integer", "maximum": UINT24_MAX },
     "footer": {
@@ -34,7 +35,7 @@ const embedSchema = {
       "additionalProperties": false,
       "disallowed": ["proxy_icon_url"],
       "properties": {
-        "text": { "type": "string", "maxLength": 2048 },
+        "text": { "type": "string", "minLength": 1, "maxLength": 2048 },
         "icon_url": { "type": "string" },
         "proxy_icon_url": {}
       }
@@ -65,8 +66,9 @@ const embedSchema = {
       "type": "object",
       "additionalProperties": false,
       "disallowed": ["proxy_icon_url"],
+      "required": ["name"],
       "properties": {
-        "name": { "type": "string", "maxLength": 256 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 256 },
         "url": { "type": "string" },
         "icon_url": { "type": "string" },
         "proxy_icon_url": {}
