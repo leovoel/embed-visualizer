@@ -1079,8 +1079,42 @@
   border-color: #36393e
 }
 
-code {
+.discord-view body,
+.discord-view button,
+.discord-view input,
+.discord-view textarea {
+  font-family: Whitney, Helvetica Neue, Helvetica, Arial, sans-serif
+}
+
+.discord-view a img {
+  border: none
+}
+
+.discord-view ol,
+.discord-view ul {
+  list-style: none
+}
+
+.discord-view strong {
+  font-weight: 600
+}
+
+.discord-view button {
+  border: 0;
+  cursor: pointer
+}
+
+.discord-view button:focus {
+  outline: 0
+}
+
+.discord-view code {
   font-family: Menlo, Consolas, Monaco, monospace;
   font-size: 14px;
   line-height: 16px
+}
+
+.discord-view a {
+  color: #00b0f4;
+  text-decoration: none
 }

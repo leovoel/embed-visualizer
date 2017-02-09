@@ -91,7 +91,7 @@ const DiscordViewWrapper = ({ darkTheme, children }) => {
   // we could actually just flatten the styling out on the respective elements,
   // but copying directly from discord is a lot easier than that
   return (
-    <div className="w-100 h-100 overflow-auto pa2">
+    <div className="w-100 h-100 overflow-auto pa2 discord-view">
       <div className={`flex-vertical whitney ${darkTheme && 'theme-dark'}`}>
         <div className="chat flex-vertical flex-spacer">
           <div className="content flex-spacer flex-horizontal">
