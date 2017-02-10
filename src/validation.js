@@ -35,6 +35,7 @@ function traverseObject(object, path) {
   return result;
 }
 
+// TODO: rewrite these so that we can report errors during validation instead of after?
 // in these we assume the data path is always NOT at the root
 const customMessages = {
   additionalProperties(data, e) {
@@ -51,20 +52,10 @@ const customMessages = {
     const dataPath = e.dataPath.slice(1);
 
     if (e.params.limit === 1) {
-      return `${dataPath} should NOT be empty`;
+      return `"${dataPath}" should NOT be empty`;
     }
 
-    return `${dataPath} ${e.message}`;
-  },
-
-  minLength(data, e) {
-    const dataPath = e.dataPath.slice(1);
-
-    if (e.params.limit === 1) {
-      return `${dataPath} should NOT be empty`;
-    }
-
-    return `${dataPath} ${e.message}`;
+    return `"${dataPath}" ${e.message}`;
   },
 
   maxLength(data, e) {
@@ -180,7 +171,7 @@ function registerKeywords(ajv) {
 
         inner.errors = [{
           keyword: 'atLeastOneOf',
-          params: { expectedProperties: expectedProperties },
+          params: { expectedProperties },
           message: `should contain at least one of: ${expected}`
         }];
 
@@ -191,8 +182,36 @@ function registerKeywords(ajv) {
     }
   };
 
+  const trim = {
+    type: 'string',
+    errors: true,
+    compile: function(enabled) {
+      function inner(data) {
+        if (data && data.trim()) {
+          return true;
+        }
+
+        inner.errors = [{
+          keyword: 'trim',
+          params: { enabled },
+          message: 'should NOT be empty'
+        }];
+
+        return false;
+      }
+
+      if (enabled) {
+        return inner;
+      }
+
+      // pass-thru
+      return (data) => true;
+    }
+  };
+
   ajv.addKeyword('disallowed', disallowed);
   ajv.addKeyword('atLeastOneOf', atLeastOneOf);
+  ajv.addKeyword('trim', trim);
   return ajv;
 }
 

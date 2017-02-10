@@ -25,9 +25,9 @@ const embedSchema = {
   "disallowed": ["type", "provider", "video"],
   "minProperties": 1,
   "properties": {
-    "title": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "title": { "type": "string", "maxLength": 256, "trim": true },
     "url": { "type": "string" },
-    "description": { "type": "string", "minLength": 1, "maxLength": 2048 },
+    "description": { "type": "string", "maxLength": 2048, "trim": true },
     "timestamp": { "type": "string", "pattern": ISO_8601.source },
     "color": { "type": "integer", "maximum": UINT24_MAX },
     "footer": {
@@ -35,7 +35,7 @@ const embedSchema = {
       "additionalProperties": false,
       "disallowed": ["proxy_icon_url"],
       "properties": {
-        "text": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "text": { "type": "string", "maxLength": 2048, "trim": true },
         "icon_url": { "type": "string" },
         "proxy_icon_url": {}
       }
@@ -68,7 +68,7 @@ const embedSchema = {
       "disallowed": ["proxy_icon_url"],
       "required": ["name"],
       "properties": {
-        "name": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "name": { "type": "string", "maxLength": 256, "trim": true },
         "url": { "type": "string" },
         "icon_url": { "type": "string" },
         "proxy_icon_url": {}
@@ -80,9 +80,10 @@ const embedSchema = {
       "items": {
         "type": "object",
         "additionalProperties": false,
+        "required": ["name", "value"],
         "properties": {
-          "name": { "type": "string", "minLength": 1, "maxLength": 256 },
-          "value": { "type": "string", "minLength": 1, "maxLength": 1024 },
+          "name": { "type": "string", "maxLength": 256, "trim": true },
+          "value": { "type": "string", "maxLength": 1024, "trim": true },
           "inline": { "type": "boolean" }
         }
       }
