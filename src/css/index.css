@@ -214,4 +214,86 @@ Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
   text-decoration: underline;
 }
 
+/*!
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+*/
+
+.atom-one-light {
+  display: block !important;
+  overflow-x: auto !important;
+  padding: 0.5em !important;
+  color: #383a42 !important;
+  background: #fafafa !important;
+}
+
+.atom-one-light > .hljs-comment,
+.atom-one-light > .hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+.atom-one-light > .hljs-doctag,
+.atom-one-light > .hljs-keyword,
+.atom-one-light > .hljs-formula {
+  color: #a626a4;
+}
+
+.atom-one-light > .hljs-section,
+.atom-one-light > .hljs-name,
+.atom-one-light > .hljs-selector-tag,
+.atom-one-light > .hljs-deletion,
+.atom-one-light > .hljs-subst {
+  color: #e45649;
+}
+
+.atom-one-light > .hljs-literal {
+  color: #0184bb;
+}
+
+.atom-one-light > .hljs-string,
+.atom-one-light > .hljs-regexp,
+.atom-one-light > .hljs-addition,
+.atom-one-light > .hljs-attribute,
+.atom-one-light > .hljs-meta-string {
+  color: #50a14f;
+}
+
+.atom-one-light > .hljs-built_in,
+.atom-one-light > .hljs-class .hljs-title {
+  color: #c18401;
+}
+
+.atom-one-light > .hljs-attr,
+.atom-one-light > .hljs-variable,
+.atom-one-light > .hljs-template-variable,
+.atom-one-light > .hljs-type,
+.atom-one-light > .hljs-selector-class,
+.atom-one-light > .hljs-selector-attr,
+.atom-one-light > .hljs-selector-pseudo,
+.atom-one-light > .hljs-number {
+  color: #986801;
+}
+
+.atom-one-light > .hljs-symbol,
+.atom-one-light > .hljs-bullet,
+.atom-one-light > .hljs-link,
+.atom-one-light > .hljs-meta,
+.atom-one-light > .hljs-selector-id,
+.atom-one-light > .hljs-title {
+  color: #4078f2;
+}
+
+.atom-one-light > .hljs-emphasis {
+  font-style: italic;
+}
+
+.atom-one-light > .hljs-strong {
+  font-weight: bold;
+}
+
+.atom-one-light > .hljs-link {
+  text-decoration: underline;
+}
+
 /* -- highlight.js -- */

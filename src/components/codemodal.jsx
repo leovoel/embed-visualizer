@@ -87,7 +87,10 @@ const CodeModal = React.createClass({
             </select>
 
             <pre>
-              <code ref={(c) => this.hljsBlock = c} className={`atom-one-dark ${language}`}>
+              <code
+                ref={(c) => this.hljsBlock = c}
+                className={`atom-one-${this.props.darkTheme ? 'dark' : 'light'} ${language}`}
+              >
                 {code}
               </code>
             </pre>

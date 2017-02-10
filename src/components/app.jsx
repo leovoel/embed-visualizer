@@ -184,6 +184,7 @@ const App = React.createClass({
           close={this.closeModal}
           data={this.state.data}
           webhookMode={this.state.webhookMode}
+          darkTheme={this.state.darkTheme}
           hasError={this.state.error !== null && this.state.error !== ''}
           currentModal={this.state.currentModal}
         />
