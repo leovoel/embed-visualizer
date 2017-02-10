@@ -154,7 +154,11 @@ const App = React.createClass({
         <div className="h-100 flex flex-column">
           <section className="flex-l flex-auto">
             <div className="vh-100 h-auto-l w-100 w-50-l pa4 pr3-l pb0-l">
-              <CodeMirror onChange={this.onCodeChange} value={this.state.input} />
+              <CodeMirror
+                onChange={this.onCodeChange}
+                value={this.state.input}
+                theme={this.state.darkTheme ? 'one-dark' : 'default'}
+              />
             </div>
             <div className="vh-100 h-auto-l w-100 w-50-l pa4 pl3-l pb0">
               <DiscordView

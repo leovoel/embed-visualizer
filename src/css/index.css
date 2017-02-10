@@ -115,6 +115,9 @@
   height: 100%;
   border-radius: .25rem;
   z-index: 0;
+  font-family: Consolas, Monaco, monospace;
+  font-weight: 300;
+  font-size: 14px;
 }
 
 /* -- codemirror -- */

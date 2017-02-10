@@ -71,12 +71,17 @@ const CodeMirror = React.createClass({
       } else {
         this.instance.setValue(next.value);
       }
+    }
 
-      if (typeof next.options === 'object') {
-        Object.keys(next.options).forEach(key => {
-          this.instance.setOption(key, next.options[key]);
-        });
-      }
+    if (typeof next.options === 'object') {
+      Object.keys(next.options).forEach(key => {
+        this.instance.setOption(key, next.options[key]);
+      });
+    }
+
+    // silly
+    if (next.theme) {
+      this.instance.setOption('theme', next.theme);
     }
   },
 
