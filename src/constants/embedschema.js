@@ -104,7 +104,8 @@ const botMessageSchema = {
   "properties": {
     "content": {
       "type": "string",
-      "maxLength": 2000
+      "maxLength": 2000,
+      "trim": true
     },
     "embed": embedSchema
   },
@@ -117,7 +118,7 @@ const webhookMessageSchema = {
   "properties": {
     "username": { "type": "string", "maxLength": 256 },
     "avatar_url": { "type": "string" },
-    "content": { "type": "string", "maxLength": 2000 },
+    "content": { "type": "string", "maxLength": 2000, "trim": true },
     "embeds": { "type": "array", "maxItems": 10, "items": embedSchema }
   },
   "atLeastOneOf": ["content", "embeds"]
