@@ -65,7 +65,9 @@ const CodeModal = React.createClass({
     if (!hasError) {
       language = languages[this.state.language].language;
       code = languages[this.state.language].generateFrom(data);
-    } else if (webhookMode) {
+    }
+
+    if (webhookMode) {
       // TODO: add support for this in whatever libraries support it directly?
       // seems like very few of them do it
       code = 'Webhook mode not supported yet.';
