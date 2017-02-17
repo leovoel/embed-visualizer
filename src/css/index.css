@@ -71,6 +71,7 @@
 
 /* -- misc -- */
 
+.flex-shrink-0 { flex-shrink: 0; }
 .pre-wrap { white-space: pre-wrap; }
 .resize-none { resize: none; }
 .open-sans { font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; }

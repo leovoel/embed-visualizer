@@ -27,7 +27,7 @@ const Modal = React.createClass({
 
     return (
       <div className={cls} style={style}>
-        <header className="bg-blurple white pa3 flex justify-between">
+        <header className="bg-blurple white pa3 flex flex-shrink-0 justify-between">
           <h3 className="ma0">{this.props.title}</h3>
           <button onClick={this.props.close} className="b bg-transparent pointer white b--none">X</button>
         </header>
