@@ -7,7 +7,7 @@ export default {
       embed = JSON.stringify(data.embed, null, 4)
           .replace(/{/g, '[')
           .replace(/}/g, ']')
-          .replace(/^    /gm, '        ')
+          .replace(/^ {4}/gm, '        ')
           .replace(/^]/gm, '    ]');
     }
 
