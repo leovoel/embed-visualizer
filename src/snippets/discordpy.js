@@ -1,3 +1,6 @@
+import Moment from 'moment';
+
+
 function pythonKwargs(args) {
   return Object.keys(args).reduce((kwargs, key) => {
     if (args[key] !== null) {
@@ -6,7 +9,7 @@ function pythonKwargs(args) {
 
     return kwargs;
   }, []).join(', ');
-};
+}
 
 function toTitleCase(s) {
   return s.charAt(0).toUpperCase() + s.substring(1);
@@ -22,11 +25,16 @@ export default {
     const result = [];
 
     if (data.embed) {
+      // TODO: don't duplicate this kind of parsing
+      let timestamp = Moment(data.embed.timestamp !== undefined ? data.embed.timestamp : null);
+      timestamp = timestamp.isValid() ? timestamp.unix() : null;
+
       const args = {
         title: data.embed.title ? JSON.stringify(data.embed.title) : null,
         colour: data.embed.color ? `discord.Colour(0x${data.embed.color.toString(16)})` : null,
         url: data.embed.url ? JSON.stringify(data.embed.url) : null,
-        description: data.embed.description ? JSON.stringify(data.embed.description) : null
+        description: data.embed.description ? JSON.stringify(data.embed.description) : null,
+        timestamp: timestamp ? `datetime.datetime.utcfromtimestamp(${timestamp})` : null
       };
 
       result.push(`embed = discord.Embed(${pythonKwargs(args)})`);
