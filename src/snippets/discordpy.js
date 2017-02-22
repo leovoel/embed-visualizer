@@ -94,7 +94,7 @@ export default {
         content: data.content ? JSON.stringify(data.content) : null,
         embed: data.embed ? 'embed' : null
       };
-      result.push(`await client.send_message(channel, ${pythonKwargs(args)})`);
+      result.push(`await bot.say(${pythonKwargs(args)})`);
     }
 
     return result.join('\n');

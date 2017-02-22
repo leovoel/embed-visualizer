@@ -78,6 +78,11 @@ const CodeModal = React.createClass({
         <div className="ma3">
 
           <div className="mv2 flex flex-auto flex-column">
+            <div className="bg-dark-red washed-blue pa2 mb2">
+              <strong>NOTE:</strong> These code snippets may need changes to work in your
+              actual program, and they may not even be correct. Do <strong>NOT</strong> just copy and paste them in
+              without understanding what they mean.
+            </div>
             <select
               className="w-100 h2 mb2"
               value={this.state.language}
@@ -88,7 +93,7 @@ const CodeModal = React.createClass({
               })}
             </select>
 
-            <pre>
+            <pre className="ma0">
               <code
                 ref={(c) => this.hljsBlock = c}
                 className={`atom-one-${this.props.darkTheme ? 'dark' : 'light'} ${language}`}
