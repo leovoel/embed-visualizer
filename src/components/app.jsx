@@ -57,7 +57,8 @@ const initialCode = JSON.stringify({
       { name: '🤔', value: 'some of these properties have certain limits...' },
       { name: '😱', value: 'try exceeding some of them!' },
       { name: '🙄', value: 'an informative error should show up, and this view will remain as-is until all issues are fixed' },
-      { name: '<:thonkang:219069250692841473>', value: '???' }
+      { name: '<:thonkang:219069250692841473>', value: 'these last two', inline: true },
+      { name: '<:thonkang:219069250692841473>', value: 'are inline fields', inline: true }
     ]
   }
 }, null, '  ');
