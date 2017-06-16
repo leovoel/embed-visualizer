@@ -10,6 +10,7 @@ import discordio from '../snippets/discordio';
 import restcord from '../snippets/restcord';
 import eris from '../snippets/eris';
 import discordrb from '../snippets/discordrb';
+import jda from '../snippets/jda';
 
 
 const languages = {
@@ -20,6 +21,7 @@ const languages = {
   'js_eris': eris,
   'php_restcord': restcord,
   'ruby_discordrb': discordrb,
+  'java_jda' : jda
 };
 
 // TODO: check for localStorage availability?
