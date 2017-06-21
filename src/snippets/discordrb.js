@@ -11,10 +11,6 @@ function rubyKwargs(args) {
   }, []).join(', ');
 }
 
-function toTitleCase(s) {
-  return s.charAt(0).toUpperCase() + s.substring(1);
-}
-
 export default {
   name: "discordrb (Ruby)",
   language: "ruby",
@@ -99,7 +95,7 @@ export default {
           const args = {
             name: field.name ? JSON.stringify(field.name) : null,
             value: field.value ? JSON.stringify(field.value) : null,
-            inline: field.inline !== undefined ? toTitleCase(field.inline.toString()) : null
+            inline: field.inline !== undefined ? field.inline.toString() : null
           };
           result.push(`  embed.add_field(${rubyKwargs(args)})`);
         }
