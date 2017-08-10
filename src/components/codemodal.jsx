@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import hljs from 'highlight.js';
 import Modal from './modal';
 
+import discord4j from '../snippets/discord4j';
 import discordnet from '../snippets/discordnet';
 import discordpy from '../snippets/discordpy';
 import discordie from '../snippets/discordie';
@@ -23,7 +24,8 @@ const languages = {
   'js_eris': eris,
   'php_restcord': restcord,
   'ruby_discordrb': discordrb,
-  'java_jda': jda
+  'java_discord4j': discord4j,
+  'java_jda': jda,
 };
 
 // TODO: check for localStorage availability?
