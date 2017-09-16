@@ -89,7 +89,7 @@ export default {
         if (e.fields && e.fields.length) {
             //.AddField("<:thonkang:219069250692841473>", "are inline fields", true);
             e.fields.forEach(e => {
-                push(`.AddField(${s(e.name)}, ${s(e.value)}, ${!!e.inline});`);
+                push(`.AddField(${s(e.name)}, ${s(e.value)}, ${!!e.inline})`);
             });
         }
 
