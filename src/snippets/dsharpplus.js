@@ -40,7 +40,7 @@ export default {
         }
 
         if (e.timestamp) {
-            push(`.WithTimestamp(DateTimeOffset.FromUnixTimeSeconds(${Date.parse(e.timestamp)}UL))`);
+            push(`.WithTimestamp(DateTimeOffset.FromUnixTimeMilliseconds(${Date.parse(e.timestamp)}UL))`);
         }
 
         if (e.footer) {
