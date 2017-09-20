@@ -6,6 +6,7 @@ import Modal from './modal';
 import discord4j from '../snippets/discord4j';
 import discordnet from '../snippets/discordnet';
 import dsharpplus from '../snippets/dsharpplus';
+import dsharpplusEmbedbuilder from '../snippets/dsharpplus-embedbuilder';
 import discordpy from '../snippets/discordpy';
 import discordie from '../snippets/discordie';
 import discordjs from '../snippets/discordjs';
@@ -19,6 +20,7 @@ import jda from '../snippets/jda';
 const languages = {
   'dotnet_discord-net': discordnet,
   'dotnet_dsharpplus': dsharpplus,
+  'dotnet_dsharpplusEmbedbuilder': dsharpplusEmbedbuilder,
   'python_discord-py': discordpy,
   'js_discordie': discordie,
   'js_discordjs': discordjs,
