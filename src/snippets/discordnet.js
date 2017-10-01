@@ -21,7 +21,7 @@ function generateFooter(data) {
         result.push(`\t.WithIconUrl(${JSON.stringify(data.icon_url)})`);
     }
 
-    result[result.length-1] += ';\n\t});';
+    result[result.length-1] += ';\n\t})';
 
     return result.join('\n\t\t');
 }
