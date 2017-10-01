@@ -66,7 +66,7 @@ export default {
             result[result.length-1] += ';';
 
             result.push('var embed = builder.Build();');
-            result.push(`await Context.Channel.SendMessageAsync(${data.content ? JSON.stringify(data.content) : 'null'}, embed)\n\t.ConfigureAwait(false);`);
+            result.push(`await Context.Channel.SendMessageAsync(\n\t${data.content ? JSON.stringify(data.content) : 'null'},\n\tembed: embed)\n\t.ConfigureAwait(false);`);
 
             return result.join('\n');
         } else {
