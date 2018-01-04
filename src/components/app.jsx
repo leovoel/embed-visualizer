@@ -78,19 +78,6 @@ const App = React.createClass({
       error: null
     };
   },
-  
-  compileInput(data) {
-    // convert RGB to int
-    if (data.embed && data.embed.color && Array.isArray(data.embed.color) && data.embed.color.length === 3) {
-      const red = parseInt(data.embed.color[0], 10);
-      const green = parseInt(data.embed.color[1], 10);
-      const blue = parseInt(data.embed.color[2], 10);
-      
-      data.embed.color =  blue | (green << 8) | (red << 16);      
-    }
-    
-    return data;
-  },
 
   validateInput(input, webhookMode) {
     let parsed, parseError, isValid, validationError;
@@ -98,9 +85,6 @@ const App = React.createClass({
 
     try {
       parsed = JSON.parse(input);
-      if (!webhookMode) {
-        parsed = this.compileInput(parsed);
-      }
       isValid = validator(parsed);
       validationError = stringifyErrors(parsed, validator.errors);
     } catch (e) {
