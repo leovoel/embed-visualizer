@@ -1,4 +1,5 @@
 import React from 'react';
+import { SketchPicker } from 'react-color';
 
 import Button from './button';
 import ModalContainer from './modalcontainer';
@@ -101,12 +102,33 @@ const App = React.createClass({
     } else if (!isValid) {
       error  = validationError;
     }
+    
+    let embedColor = 0;
+    if (webhookMode) {
+      if (parsed.embeds && parsed.embeds[0]) {
+        const c = parsed.embeds[0].color;
+        embedColor = {
+          r: (c >> 16) & 0xFF,
+          g: (c >> 8) & 0xFF,
+          b: (c) & 0xFF,
+        };
+      }
+    } else {
+      if (parsed.embed) {
+        const c = parsed.embed.color;
+        embedColor = {
+          r: (c >> 16) & 0xFF,
+          g: (c >> 8) & 0xFF,
+          b: (c) & 0xFF,
+        };
+      }
+    }
 
     // we set all these here to avoid some re-renders.
     // maybe it's okay (and if we ever want to
     // debounce validation, we need to take some of these out)
     // but for now that's what we do.
-    this.setState({ input, data, error, webhookMode });
+    this.setState({ input, data, error, webhookMode, embedColor });
   },
 
   componentWillMount() {
@@ -143,12 +165,34 @@ const App = React.createClass({
   toggleCompactMode() {
     this.setState({ compactMode: !this.state.compactMode });
   },
+  
+  openColorPicker() {
+    this.setState({ colorPickerShowing: !this.state.colorPickerShowing });
+  },
+  
+  colorChange(color) {
+    let val = color.rgb.b | (color.rgb.g << 8) | (color.rgb.r << 16);
+    if (val === 0) val = 1; // discord wont accept 0
+    const input = this.state.input.replace(/"color":\s*([0-9]+)/, '"color": ' + val);
+    this.setState({ input });
+    this.validateInput(input, this.state.webhookMode);
+  },
 
   render() {
     const webhookModeLabel = `${this.state.webhookMode ? 'Dis' : 'En'}able webhook mode`;
     const themeLabel = `${this.state.darkTheme ? 'Light' : 'Dark'} theme`;
     const compactModeLabel = `${this.state.compactMode ? 'Cozy' : 'Compact'} mode`;
+    const colorPickerLabel = `${!this.state.colorPickerShowing ? 'Open' : 'Close'} color picker`;
 
+    const cover = {
+      position: 'absolute',
+      bottom: '65px',
+      'margin-left': '-30px'
+    };
+    const inlineBlock = {
+      display: 'inline-block'
+    };
+    
     return (
       <main className="vh-100-l bg-blurple open-sans">
 
@@ -174,6 +218,16 @@ const App = React.createClass({
 
           <footer className="w-100 pa3 tc white">
             <FooterButton label="Generate code" onClick={this.openCodeModal} />
+            <div style={ inlineBlock }>
+              <FooterButton label={colorPickerLabel} onClick={this.openColorPicker} />
+              { this.state.colorPickerShowing
+                ? <div style={ cover }><SketchPicker
+                  color={this.state.embedColor}
+                  onChange={this.colorChange}
+                /></div>
+                : null
+              }
+            </div>
             <FooterButton label={webhookModeLabel} onClick={this.toggleWebhookMode} />
             <FooterButton label={themeLabel} onClick={this.toggleTheme} />
             <FooterButton label={compactModeLabel} onClick={this.toggleCompactMode} />
