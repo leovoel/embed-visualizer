@@ -39,7 +39,7 @@ const Modals = {
 // this is just for convenience.
 // TODO: vary this more?
 const initialCode = JSON.stringify({
-  content: 'this `supports` __a__ **subset** *of* ~~markdown~~ 😃 ```js\nfunction foo(bar) {\n  console.log(bar);\n}\n\nfoo(1);```',
+  content: 'this `supports` __a__ **subset** *of* ~~markdown~~ ðŸ˜ƒ ```js\nfunction foo(bar) {\n  console.log(bar);\n}\n\nfoo(1);```',
   embed: {
     title: 'title ~~(did you know you can have markdown here too?)~~',
     description: 'this supports [named links](https://discordapp.com) on top of the previously shown subset of markdown. ```\nyes, even code blocks```',
@@ -55,9 +55,9 @@ const initialCode = JSON.stringify({
       icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png'
     },
     fields: [
-      { name: '🤔', value: 'some of these properties have certain limits...' },
-      { name: '😱', value: 'try exceeding some of them!' },
-      { name: '🙄', value: 'an informative error should show up, and this view will remain as-is until all issues are fixed' },
+      { name: 'ðŸ¤”', value: 'some of these properties have certain limits...' },
+      { name: 'ðŸ˜±', value: 'try exceeding some of them!' },
+      { name: 'ðŸ™„', value: 'an informative error should show up, and this view will remain as-is until all issues are fixed' },
       { name: '<:thonkang:219069250692841473>', value: 'these last two', inline: true },
       { name: '<:thonkang:219069250692841473>', value: 'are inline fields', inline: true }
     ]
@@ -78,6 +78,19 @@ const App = React.createClass({
       error: null
     };
   },
+  
+  compileInput(data) {
+    // convert RGB to int
+    if (data.embed && data.embed.color && Array.isArray(data.embed.color) && data.embed.color.length === 3) {
+      const red = parseInt(data.embed.color[0], 10);
+      const green = parseInt(data.embed.color[1], 10);
+      const blue = parseInt(data.embed.color[2], 10);
+      
+      data.embed.color =  blue | (green << 8) | (red << 16);      
+    }
+    
+    return data;
+  },
 
   validateInput(input, webhookMode) {
     let parsed, parseError, isValid, validationError;
@@ -85,6 +98,9 @@ const App = React.createClass({
 
     try {
       parsed = JSON.parse(input);
+      if (!webhookMode) {
+        parsed = this.compileInput(parsed);
+      }
       isValid = validator(parsed);
       validationError = stringifyErrors(parsed, validator.errors);
     } catch (e) {
@@ -174,7 +190,6 @@ const App = React.createClass({
     let val = color.rgb.b | (color.rgb.g << 8) | (color.rgb.r << 16);
     if (val === 0) val = 1; // discord wont accept 0
     const input = this.state.input.replace(/"color":\s*([0-9]+)/, '"color": ' + val);
-    this.setState({ input });
     this.validateInput(input, this.state.webhookMode);
   },
 
@@ -186,11 +201,8 @@ const App = React.createClass({
 
     const cover = {
       position: 'absolute',
-      bottom: '65px',
-      'margin-left': '-30px'
-    };
-    const inlineBlock = {
-      display: 'inline-block'
+      bottom: '45px',
+      'margin-left': '-25px'
     };
     
     return (
@@ -218,7 +230,7 @@ const App = React.createClass({
 
           <footer className="w-100 pa3 tc white">
             <FooterButton label="Generate code" onClick={this.openCodeModal} />
-            <div style={ inlineBlock }>
+            <div style={{ position: 'relative', display: 'inline-block' }}>
               <FooterButton label={colorPickerLabel} onClick={this.openColorPicker} />
               { this.state.colorPickerShowing
                 ? <div style={ cover }><SketchPicker
