@@ -95,24 +95,20 @@ const App = React.createClass({
     }
     
     let embedColor = 0;
-    if (webhookMode) {
-      if (parsed.embeds && parsed.embeds[0]) {
-        const c = parsed.embeds[0].color;
-        embedColor = {
-          r: (c >> 16) & 0xFF,
-          g: (c >> 8) & 0xFF,
-          b: (c) & 0xFF,
-        };
-      }
-    } else {
-      if (parsed.embed) {
-        const c = parsed.embed.color;
-        embedColor = {
-          r: (c >> 16) & 0xFF,
-          g: (c >> 8) & 0xFF,
-          b: (c) & 0xFF,
-        };
-      }
+    if (webhookMode && parsed && parsed.embeds && parsed.embeds[0]) {
+      const c = parsed.embeds[0].color;
+      embedColor = {
+        r: (c >> 16) & 0xFF,
+        g: (c >> 8) & 0xFF,
+        b: (c) & 0xFF,
+      };
+    } else if (parsed && parsed.embed) {
+      const c = parsed.embed.color;
+      embedColor = {
+        r: (c >> 16) & 0xFF,
+        g: (c >> 8) & 0xFF,
+        b: (c) & 0xFF,
+      };
     }
 
     // we set all these here to avoid some re-renders.

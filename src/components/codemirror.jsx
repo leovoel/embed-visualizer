@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import debounce from 'lodash.debounce';
 
 import CM from 'codemirror';
@@ -46,8 +45,7 @@ const CodeMirror = React.createClass({
   },
 
   componentDidMount() {
-    const textarea = ReactDOM.findDOMNode(this.textarea);
-    this.instance = CM.fromTextArea(textarea, this.props.options);
+    this.instance = CM.fromTextArea(this.textarea, this.props.options);
     this.instance.on('change', this.valueChanged);
     this.focus();
   },

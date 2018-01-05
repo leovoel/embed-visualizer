@@ -1,6 +1,6 @@
 export default {
     name: "DSharpPlus (C#)",
-    language: "C#",
+    language: "csharp",
 
     generateFrom(data) {
 

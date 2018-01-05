@@ -1,6 +1,6 @@
 export default {
   name: "DSharpPlus ModernEmbedBuilder (C#)",
-  language: "C#",
+  language: "csharp",
 
   generateFrom(data) {
 

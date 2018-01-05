@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import hljs from 'highlight.js';
 import Modal from './modal';
 
@@ -50,40 +49,27 @@ const CodeModal = React.createClass({
     return { language: initial };
   },
 
-  componentDidMount() {
-    this.highlightCode();
-  },
-
-  componentDidUpdate() {
-    this.highlightCode();
-  },
-
   changeLanguage(event) {
     localStorage.setItem('codegen_lang', event.target.value);
     this.setState({ language: event.target.value });
   },
 
-  highlightCode() {
-    const node = ReactDOM.findDOMNode(this);
-    const codeBlock = node.querySelector('pre code');
-    hljs.highlightBlock(codeBlock);
-  },
-
   render() {
     const { data, hasError, webhookMode, ...props } = this.props;
     let code = 'Errors encountered when validating/parsing your data.\nCheck those first before trying to generate code.';
-    let language = 'text';
-
-    if (!hasError) {
-      language = languages[this.state.language].language;
-      code = languages[this.state.language].generateFrom(data);
-    }
+    let language = 'accesslog';
 
     if (webhookMode) {
       // TODO: add support for this in whatever libraries support it directly?
       // seems like very few of them do it
       code = 'Webhook mode not supported yet.';
+    } else if (!hasError) {
+      language = languages[this.state.language].language;
+      code = languages[this.state.language].generateFrom(data);
     }
+
+    const theme = `atom-one-${this.props.darkTheme ? 'dark' : 'light'}`;
+    const highlightedBlock = hljs.highlight(language, code, true);
 
     return (
       <Modal title="Generate code" {...props} maxWidth="90ch">
@@ -107,11 +93,9 @@ const CodeModal = React.createClass({
 
             <pre className="ma0">
               <code
-                ref={(c) => this.hljsBlock = c}
-                className={`atom-one-${this.props.darkTheme ? 'dark' : 'light'} ${language}`}
-              >
-                {code}
-              </code>
+                className={`${theme} hljs ${highlightedBlock.language}`}
+                dangerouslySetInnerHTML={{ __html: highlightedBlock.value }}
+              />
             </pre>
           </div>
 

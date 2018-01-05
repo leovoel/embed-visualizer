@@ -53,7 +53,7 @@ function generateFields(data) {
 
 export default {
     name: 'Discord.Net (C#)',
-    language: 'C#',
+    language: 'csharp',
     generateFrom(data) {
         if (data.embed) {
             let result = [];
