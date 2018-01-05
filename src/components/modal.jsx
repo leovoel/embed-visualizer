@@ -7,7 +7,7 @@ const Modal = React.createClass({
     maxHeight: React.PropTypes.string,
     title: React.PropTypes.string,
     close: React.PropTypes.func,
-    cildren: React.PropTypes.node
+    children: React.PropTypes.node
   },
 
   getDefaultProps() {

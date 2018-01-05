@@ -16,7 +16,7 @@ import discordrb from '../snippets/discordrb';
 import jda from '../snippets/jda';
 
 
-const languages = {
+const libraries = {
   'dotnet_discord-net': discordnet,
   'dotnet_dsharpplus': dsharpplus,
   'dotnet_dsharpplusEmbedbuilder': dsharpplusEmbedbuilder,
@@ -34,24 +34,26 @@ const languages = {
 // TODO: check for localStorage availability?
 // are we ever going to run into a browser that supports flexbox but not localStorage?
 
+const LOCAL_STORAGE_KEY = 'codegen_lib';
+
 const CodeModal = React.createClass({
   getInitialState() {
-    const keys = Object.keys(languages);
+    const keys = Object.keys(libraries);
     let initial = keys[Math.floor(Math.random() * keys.length)];
 
-    const stored = localStorage.getItem('codegen_lang');
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (stored) {
       initial = stored;
     } else {
-      localStorage.setItem('codegen_lang', initial);
+      localStorage.setItem(LOCAL_STORAGE_KEY, initial);
     }
 
-    return { language: initial };
+    return { library: initial };
   },
 
-  changeLanguage(event) {
+  changeLibrary(event) {
     localStorage.setItem('codegen_lang', event.target.value);
-    this.setState({ language: event.target.value });
+    this.setState({ library: event.target.value });
   },
 
   render() {
@@ -64,8 +66,8 @@ const CodeModal = React.createClass({
       // seems like very few of them do it
       code = 'Webhook mode not supported yet.';
     } else if (!hasError) {
-      language = languages[this.state.language].language;
-      code = languages[this.state.language].generateFrom(data);
+      language = libraries[this.state.library].language;
+      code = libraries[this.state.library].generateFrom(data);
     }
 
     const theme = `atom-one-${this.props.darkTheme ? 'dark' : 'light'}`;
@@ -83,11 +85,11 @@ const CodeModal = React.createClass({
             </div>
             <select
               className="w-100 h2 mb2"
-              value={this.state.language}
-              onChange={this.changeLanguage}
+              value={this.state.library}
+              onChange={this.changeLibrary}
             >
-              {Object.keys(languages).sort().map(k => {
-                return <option value={k} key={k}>{languages[k].name}</option>;
+              {Object.keys(libraries).sort().map(k => {
+                return <option value={k} key={k}>{libraries[k].name}</option>;
               })}
             </select>
 

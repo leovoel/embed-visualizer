@@ -173,7 +173,7 @@ const App = React.createClass({
     const cover = {
       position: 'absolute',
       bottom: '45px',
-      'margin-left': '-25px'
+      marginLeft: '-25px'
     };
     
     return (
