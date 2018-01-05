@@ -1,4 +1,4 @@
-import REACT_ELEMENT_TYPE from 'react/lib/ReactElementSymbol';
+import React from 'react';
 import SimpleMarkdown from 'simple-markdown';
 import hljs from 'highlight.js';
 import Twemoji from 'twemoji';
@@ -12,35 +12,6 @@ import Emoji from '../constants/emoji';
 // names are weird and sometimes missing, as i'm not sure
 // what all of these are doing exactly.
 
-
-// this function seems to be duplicated quite a bit in the original source...
-function createReactElement(type, props, key, ...children) {
-  const defaultProps = type && type.defaultProps;
-
-  if (props && defaultProps) {
-    for (const prop in defaultProps) {
-      if (props[prop] === undefined) {
-        props[prop] = defaultProps[prop];
-      }
-    }
-  } else if (!props) {
-    props = defaultProps || {};
-  }
-
-  props.children = children[0];
-  if (children.length > 1) {
-    props.children = children;
-  }
-
-  return {
-    $$typeof: REACT_ELEMENT_TYPE,
-    type: type,
-    key: key == null ? null : `${key}`,
-    ref: null,
-    props: props,
-    _owner: null
-  };
-}
 
 function flattenAst(node, parent) {
   if (Array.isArray(node)) {
@@ -76,34 +47,6 @@ function astToString(node) {
   }
 
   return inner(node).join('');
-}
-
-function recurse(node, recurseOutput, state) {
-  if (typeof node.content === 'string') {
-    return node.content;
-  }
-
-  return recurseOutput(node.content, state);
-}
-
-function makeClassName(...parameters) {
-  const result = [];
-
-  for (const parameter of parameters) {
-    if (parameter) {
-      if (typeof parameter === 'string' || typeof parameter === 'number') {
-        result.push(parameter);
-      } else if (typeof parameter === 'object') {
-        for (const key in parameter) {
-          if (parameter.hasOwnProperty(key) && parameter[key]) {
-            result.push(key);
-          }
-        }
-      }
-    }
-  }
-
-  return result.join(' ');
 }
 
 function parserFor(rules, returnAst) {
@@ -270,13 +213,18 @@ const baseRules = {
       }
     },
     react(node, recurseOutput, state) {
-      return node.src ? createReactElement('img', {
-        draggable: false,
-        className: makeClassName('emoji', { jumboable: node.jumboable }),
-        alt: node.surrogate,
-        title: node.name,
-        src: node.src
-      }) : createReactElement('span', {}, state.key, node.surrogate);
+      return node.src ? (
+        <img
+          draggable={false}
+          className={`emoji ${node.jumboable ? 'jumboable' : ''}`}
+          alt={node.surrogate}
+          title={node.name}
+          src={node.src}
+          key={state.key}
+        />
+      ) : (
+        <span key={state.key}>{node.surrogate}</span>
+      );
     }
   },
   customEmoji: {
@@ -299,13 +247,16 @@ const baseRules = {
       };
     },
     react(node, recurseOutput, state) {
-      return createReactElement('img', {
-        draggable: false,
-        className: makeClassName('emoji', { jumboable: node.jumboable }),
-        alt: `<:${node.name}:${node.id}>`,
-        title: node.name,
-        src: node.src
-      });
+      return (
+        <img
+          draggable={false}
+          className={`emoji ${node.jumboable ? 'jumboable' : ''}`}
+          alt={`<:${node.name}:${node.id}>`}
+          title={node.name}
+          src={node.src}
+          key={state.key}
+        />
+      );
     }
   },
   text: {
@@ -347,13 +298,13 @@ function createRules(r) {
       match: SimpleMarkdown.inlineRegex(/^~~([\s\S]+?)~~(?!_)/),
       parse: r.u.parse,
       react(node, recurseOutput, state) {
-        return createReactElement('s', {}, state.key, recurseOutput(node.content, state));
+        return <s key={state.key}>{recurseOutput(node.content, state)}</s>;
       }
     },
     paragraph: {
       ...paragraph,
       react(node, recurseOutput, state) {
-        return createReactElement('p', {}, state.key, recurseOutput(node.content, state));
+        return <p key={state.key}>{recurseOutput(node.content, state)}</p>;
       }
     },
     url: {
@@ -368,20 +319,27 @@ function createRules(r) {
         // we don't really bother here
         const children = recurseOutput(node.content, state);
         const title = node.title || astToString(node.content);
-        return createReactElement('a', {
-          title: title,
-          href: SimpleMarkdown.sanitizeUrl(node.target),
-          target: '_blank',
-          rel: 'noreferrer'
-        }, state.key, children);
+        return (
+          <a
+            title={title}
+            href={SimpleMarkdown.sanitizeUrl(node.target)}
+            target='_blank'
+            rel='noreferrer'
+            key={state.key}
+          >
+            {children}
+          </a>
+        );
       }
     },
     inlineCode: {
       ...inlineCode,
       react(node, recurseOutput, state) {
-        return createReactElement('code', {
-          className: 'inline'
-        }, state.key, recurse(node, recurseOutput, state));
+        return (
+          <code className='inline' key={state.key}>
+            {node.content}
+          </code>
+        );
       }
     },
     codeBlock: {
@@ -389,20 +347,21 @@ function createRules(r) {
       react(node, recurseOutput, state) {
         if (node.lang && hljs.getLanguage(node.lang) != null) {
           const highlightedBlock = hljs.highlight(node.lang, node.content, true);
-          return createReactElement('pre', {}, state.key,
-            createReactElement('code', {
-              className: 'hljs ' + highlightedBlock.language,
-              dangerouslySetInnerHTML: {
-                __html: highlightedBlock.value
-              }
-            })
+
+          return (
+            <pre key={state.key}>
+              <code
+                className={`hljs ${highlightedBlock.language}`}
+                dangerouslySetInnerHTML={{ __html: highlightedBlock.value }}
+              />
+            </pre>
           );
         }
 
-        return createReactElement('pre', {}, state.key,
-          createReactElement('code', {
-            className: 'hljs'
-          }, undefined, recurse(node, recurseOutput, state))
+        return (
+          <pre key={state.key}>
+            <code className='hljs'>{node.content}</code>
+          </pre>
         );
       }
     }

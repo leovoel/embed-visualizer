@@ -74,17 +74,17 @@ const CodeModal = React.createClass({
     const highlightedBlock = hljs.highlight(language, code, true);
 
     return (
-      <Modal title="Generate code" {...props} maxWidth="90ch">
-        <div className="ma3">
+      <Modal title='Generate code' {...props} maxWidth='90ch'>
+        <div className='ma3'>
 
-          <div className="mv2 flex flex-auto flex-column">
-            <div className="bg-dark-red washed-blue pa2 mb2">
+          <div className='mv2 flex flex-auto flex-column'>
+            <div className='bg-dark-red washed-blue pa2 mb2'>
               <strong>NOTE:</strong> These code snippets may need changes to work in your
               actual program, and they may not even be correct. Do <strong>NOT</strong> just copy and paste them in
               without understanding what they mean.
             </div>
             <select
-              className="w-100 h2 mb2"
+              className='w-100 h2 mb2'
               value={this.state.library}
               onChange={this.changeLibrary}
             >
@@ -93,7 +93,7 @@ const CodeModal = React.createClass({
               })}
             </select>
 
-            <pre className="ma0">
+            <pre className='ma0'>
               <code
                 className={`${theme} hljs ${highlightedBlock.language}`}
                 dangerouslySetInnerHTML={{ __html: highlightedBlock.value }}

@@ -13,19 +13,26 @@ import {
   botMessageSchema,
   webhookMessageSchema,
   registerKeywords,
-  stringifyErrors
+  stringifyErrors,
 } from '../validation';
+
+import {
+  extractRGB,
+  combineRGB,
+} from '../color';
 
 
 const ajv = registerKeywords(new Ajv({ allErrors: true }));
 const validators = {
   regular: ajv.compile(botMessageSchema),
-  webhook: ajv.compile(webhookMessageSchema)
+  webhook: ajv.compile(webhookMessageSchema),
 };
 
-const FooterButton = (props) => {
+function FooterButton(props) {
   return <Button {...props} className='shadow-1 shadow-hover-2 shadow-up-hover' />;
-};
+}
+
+const initialColor = Math.floor(Math.random() * 0xFFFFFF);
 
 // this is just for convenience.
 // TODO: vary this more?
@@ -35,7 +42,7 @@ const initialCode = JSON.stringify({
     title: 'title ~~(did you know you can have markdown here too?)~~',
     description: 'this supports [named links](https://discordapp.com) on top of the previously shown subset of markdown. ```\nyes, even code blocks```',
     url: 'https://discordapp.com',
-    color: Math.floor(Math.random() * 0xFFFFFF),
+    color: initialColor,
     timestamp: new Date().toISOString(),
     footer: { icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png', text: 'footer text' },
     thumbnail: { url: 'https://cdn.discordapp.com/embed/avatars/0.png' },
@@ -66,49 +73,36 @@ const App = React.createClass({
       currentModal: null,
       input: initialCode,
       data: {},
-      error: null
+      error: null,
+      colorPickerShowing: false,
+      embedColor: extractRGB(initialColor),
     };
   },
 
   validateInput(input, webhookMode) {
-    let parsed, parseError, isValid, validationError;
     const validator = webhookMode ? validators.webhook : validators.regular;
+
+    let parsed;
+    let isValid = false;
+    let error = '';
 
     try {
       parsed = JSON.parse(input);
       isValid = validator(parsed);
-      validationError = stringifyErrors(parsed, validator.errors);
+      if (!isValid) {
+        error = stringifyErrors(parsed, validator.errors);
+      }
     } catch (e) {
-      parseError = e.message;
+      error = e.message;
     }
 
-    let data = this.state.data;
-    if (isValid) {
-      data = parsed;
-    }
+    let data = isValid ? parsed : this.state.data;
 
-    let error = '';
-    if (parseError) {
-      error = parseError;
-    } else if (!isValid) {
-      error  = validationError;
-    }
-    
-    let embedColor = 0;
-    if (webhookMode && parsed && parsed.embeds && parsed.embeds[0]) {
-      const c = parsed.embeds[0].color;
-      embedColor = {
-        r: (c >> 16) & 0xFF,
-        g: (c >> 8) & 0xFF,
-        b: (c) & 0xFF,
-      };
-    } else if (parsed && parsed.embed) {
-      const c = parsed.embed.color;
-      embedColor = {
-        r: (c >> 16) & 0xFF,
-        g: (c >> 8) & 0xFF,
-        b: (c) & 0xFF,
-      };
+    let embedColor = { r: 0, g: 0, b: 0 };
+    if (webhookMode && isValid && data.embeds && data.embeds[0]) {
+      embedColor = extractRGB(data.embeds[0].color);
+    } else if (!webhookMode && isValid && data.embed) {
+      embedColor = extractRGB(data.embed.color);
     }
 
     // we set all these here to avoid some re-renders.
@@ -158,9 +152,9 @@ const App = React.createClass({
   },
   
   colorChange(color) {
-    let val = color.rgb.b | (color.rgb.g << 8) | (color.rgb.r << 16);
+    let val = combineRGB(color.rgb.r, color.rgb.g, color.rgb.b);
     if (val === 0) val = 1; // discord wont accept 0
-    const input = this.state.input.replace(/"color":\s*([0-9]+)/, '"color": ' + val);
+    const input = this.state.input.replace(/"color"\s*:\s*([0-9]+)/, '"color": ' + val);
     this.validateInput(input, this.state.webhookMode);
   },
 
@@ -170,25 +164,33 @@ const App = React.createClass({
     const compactModeLabel = `${this.state.compactMode ? 'Cozy' : 'Compact'} mode`;
     const colorPickerLabel = `${!this.state.colorPickerShowing ? 'Open' : 'Close'} color picker`;
 
-    const cover = {
-      position: 'absolute',
-      bottom: '45px',
-      marginLeft: '-25px'
-    };
+    const colorPicker = this.state.colorPickerShowing ? (
+      <div style={{
+        position: 'absolute',
+        bottom: '45px',
+        marginLeft: '-25px',
+      }}>
+        <SketchPicker
+          color={this.state.embedColor}
+          onChange={this.colorChange}
+          disableAlpha={true}
+        />
+      </div>
+    ) : null;
     
     return (
-      <main className="vh-100-l bg-blurple open-sans">
+      <main className='vh-100-l bg-blurple open-sans'>
 
-        <div className="h-100 flex flex-column">
-          <section className="flex-l flex-auto">
-            <div className="vh-100 h-auto-l w-100 w-50-l pa4 pr3-l pb0-l">
+        <div className='h-100 flex flex-column'>
+          <section className='flex-l flex-auto'>
+            <div className='vh-100 h-auto-l w-100 w-50-l pa4 pr3-l pb0-l'>
               <CodeMirror
                 onChange={this.onCodeChange}
                 value={this.state.input}
                 theme={this.state.darkTheme ? 'one-dark' : 'default'}
               />
             </div>
-            <div className="vh-100 h-auto-l w-100 w-50-l pa4 pl3-l pb0">
+            <div className='vh-100 h-auto-l w-100 w-50-l pa4 pl3-l pb0'>
               <DiscordView
                 data={this.state.data}
                 error={this.state.error}
@@ -199,22 +201,16 @@ const App = React.createClass({
             </div>
           </section>
 
-          <footer className="w-100 pa3 tc white">
-            <FooterButton label="Generate code" onClick={this.openCodeModal} />
+          <footer className='w-100 pa3 tc white'>
+            <FooterButton label='Generate code' onClick={this.openCodeModal} />
             <div style={{ position: 'relative', display: 'inline-block' }}>
               <FooterButton label={colorPickerLabel} onClick={this.openColorPicker} />
-              { this.state.colorPickerShowing
-                ? <div style={ cover }><SketchPicker
-                  color={this.state.embedColor}
-                  onChange={this.colorChange}
-                /></div>
-                : null
-              }
+              {colorPicker}
             </div>
             <FooterButton label={webhookModeLabel} onClick={this.toggleWebhookMode} />
             <FooterButton label={themeLabel} onClick={this.toggleTheme} />
             <FooterButton label={compactModeLabel} onClick={this.toggleCompactMode} />
-            <FooterButton label="About" onClick={this.openAboutModal} />
+            <FooterButton label='About' onClick={this.openAboutModal} />
           </footer>
         </div>
 

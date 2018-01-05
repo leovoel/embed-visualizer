@@ -29,29 +29,29 @@ const MessageTimestamp = React.createClass({
     const { compactMode } = this.props;
     const computed = compactMode ? this.state.moment.format('LT') : this.state.moment.calendar();
 
-    return <span className="timestamp">{computed}</span>;
+    return <span className='timestamp'>{computed}</span>;
   },
 });
 
 const MessageBody = ({ compactMode, username, content, webhookMode }) => {
   if (compactMode) {
     return (
-      <div className="markup">
+      <div className='markup'>
         <MessageTimestamp compactMode={compactMode} />
-        <span className="username-wrapper v-btm">
-          <strong className="user-name">{username}</strong>
-          <span className="bot-tag">BOT</span>
+        <span className='username-wrapper v-btm'>
+          <strong className='user-name'>{username}</strong>
+          <span className='bot-tag'>BOT</span>
         </span>
-        <span className="highlight-separator"> - </span>
-        <span className="message-content">{content && parse(content, true, {}, jumboify)}</span>
+        <span className='highlight-separator'> - </span>
+        <span className='message-content'>{content && parse(content, true, {}, jumboify)}</span>
       </div>
     );
   } else if (content) {
     if (webhookMode) {
-      return <div className="markup">{parseAllowLinks(content, true, {}, jumboify)}</div>;
+      return <div className='markup'>{parseAllowLinks(content, true, {}, jumboify)}</div>;
     }
 
-    return <div className="markup">{parse(content, true, {}, jumboify)}</div>;
+    return <div className='markup'>{parse(content, true, {}, jumboify)}</div>;
   }
 
   return null;
@@ -64,11 +64,11 @@ const CozyMessageHeader = ({ compactMode, username }) => {
 
   return (
     <h2 style={{ lineHeight: '16px' }}>
-      <span className="username-wrapper v-btm">
-        <strong className="user-name">{username}</strong>
-        <span className="bot-tag">BOT</span>
+      <span className='username-wrapper v-btm'>
+        <strong className='user-name'>{username}</strong>
+        <span className='bot-tag'>BOT</span>
       </span>
-      <span className="highlight-separator"> - </span>
+      <span className='highlight-separator'> - </span>
       <MessageTimestamp compactMode={compactMode} />
     </h2>
   );
@@ -79,7 +79,7 @@ const Avatar = ({ compactMode, url }) => {
     return null;
   }
 
-  return <div className="avatar-large animate" style={{ backgroundImage: `url('${url}')` }} />;
+  return <div className='avatar-large animate' style={{ backgroundImage: `url('${url}')` }} />;
 };
 
 const ErrorHeader = ({ error }) => {
@@ -87,7 +87,7 @@ const ErrorHeader = ({ error }) => {
     return null;
   }
 
-  return <header className="f6 bg-red br2 pa2 br--top w-100 code pre-wrap">{error}</header>;
+  return <header className='f6 bg-red br2 pa2 br--top w-100 code pre-wrap'>{error}</header>;
 };
 
 const DiscordViewWrapper = ({ darkTheme, children }) => {
@@ -95,13 +95,13 @@ const DiscordViewWrapper = ({ darkTheme, children }) => {
   // we could actually just flatten the styling out on the respective elements,
   // but copying directly from discord is a lot easier than that
   return (
-    <div className="w-100 h-100 overflow-auto pa2 discord-view">
+    <div className='w-100 h-100 overflow-auto pa2 discord-view'>
       <div className={`flex-vertical whitney ${darkTheme && 'theme-dark'}`}>
-        <div className="chat flex-vertical flex-spacer">
-          <div className="content flex-spacer flex-horizontal">
-            <div className="flex-spacer flex-vertical messages-wrapper">
-              <div className="scroller-wrap">
-                <div className="scroller messages">
+        <div className='chat flex-vertical flex-spacer'>
+          <div className='content flex-spacer flex-horizontal'>
+            <div className='flex-spacer flex-vertical messages-wrapper'>
+              <div className='scroller-wrap'>
+                <div className='scroller messages'>
                   {children}
                 </div>
               </div>
@@ -142,10 +142,10 @@ const DiscordView = React.createClass({
         <DiscordViewWrapper darkTheme={darkTheme}>
           <div className={`message-group hide-overflow ${compactMode ? 'compact' : ''}`}>
             <Avatar url={avatar_url} compactMode={compactMode} />
-            <div className="comment">
-              <div className="message first">
+            <div className='comment'>
+              <div className='message first'>
                 <CozyMessageHeader username={username} compactMode={compactMode} />
-                <div className="message-text">
+                <div className='message-text'>
                   <MessageBody
                     content={content}
                     username={username}

@@ -120,7 +120,7 @@ const rules = {
     },
 
     react(node, recurseOutput, state) {
-      return <div key={state.key} className="db b f3 mv2 tc">{recurseOutput(node.content, state)}</div>;
+      return <div key={state.key} className='db b f3 mv2 tc'>{recurseOutput(node.content, state)}</div>;
     }
   },
 
@@ -136,11 +136,11 @@ const rules = {
     react(node, recurseOutput, state) {
       return (
         <a
-          className="link blurple underline-hover"
+          className='link blurple underline-hover'
           href={SimpleMarkdown.sanitizeUrl(node.target)}
           title={node.title}
           key={state.key}
-          target="_blank"
+          target='_blank'
         >
           {recurseOutput(node.content, state)}
         </a>
@@ -168,7 +168,7 @@ const rules = {
   hr: {
     ...SimpleMarkdown.defaultRules.hr,
     react(node, recurseOutput, state) {
-      return <hr className="b--solid b--light-gray ma0" key={state.key} />;
+      return <hr className='b--solid b--light-gray ma0' key={state.key} />;
     }
   },
 };
@@ -183,11 +183,11 @@ const renderAboutText = (input) => {
 
 const AboutModal = (props) => {
   return (
-    <Modal title="About" maxWidth="80ch" maxHeight="90%" {...props}>
-      <div className="ma3 nested-copy-seperator nested-copy-line-height">
-        <div className="center w4">
-          <a href={GITHUB_REPO} title="Embed Visualizer" target="_blank">
-            <img src={logo} alt="Embed Visualizer" />
+    <Modal title='About' maxWidth='80ch' maxHeight='90%' {...props}>
+      <div className='ma3 nested-copy-seperator nested-copy-line-height'>
+        <div className='center w4'>
+          <a href={GITHUB_REPO} title='Embed Visualizer' target='_blank'>
+            <img src={logo} alt='Embed Visualizer' />
           </a>
         </div>
         {renderAboutText(aboutText)}

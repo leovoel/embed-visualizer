@@ -1,5 +1,4 @@
 import React from 'react';
-import debounce from 'lodash.debounce';
 
 import CM from 'codemirror';
 import 'codemirror/lib/codemirror.css';
@@ -12,56 +11,52 @@ import 'codemirror/addon/scroll/simplescrollbars';
 import 'codemirror/mode/javascript/javascript';
 
 
-const convertLineEndings = (str) => {
-  if (!str) return str;
-  return str.replace(/\r\n?/g, '\n');
+const defaultOptions = {
+  mode: { name: 'javascript', json: true },
+  autoCloseBrackets: true,
+  matchBrackets: true,
+  tabSize: 2,
+  extraKeys: {
+    // see https://github.com/codemirror/CodeMirror/issues/988
+    Tab: function (cm) {
+      if (cm.somethingSelected()) {
+        cm.indentSelection('add');
+        return;
+      }
+
+      cm.execCommand('insertSoftTab');
+    },
+  },
+  viewportMargin: Infinity,
 };
 
 const CodeMirror = React.createClass({
   getDefaultProps() {
     return {
-      className: 'w-100 h-100',
-      options: {
-        mode: { name: 'javascript', json: true },
-        autoCloseBrackets: true,
-        matchBrackets: true,
-        tabSize: 2,
-        extraKeys: {
-          // see https://github.com/codemirror/CodeMirror/issues/988
-          Tab: function(cm) {
-            if (cm.somethingSelected()) {
-              cm.indentSelection('add');
-              return;
-            }
-
-            cm.execCommand("insertSoftTab");
-          }
-        },
-        viewportMargin: Infinity,
-        theme: 'one-dark'
-      },
-      preserveScrollPosition: false
+      theme: 'default',
+      preserveScrollPosition: false,
     };
   },
 
   componentDidMount() {
-    this.instance = CM.fromTextArea(this.textarea, this.props.options);
+    this.instance = CM.fromTextArea(this.textarea, defaultOptions);
+    this.updateTheme(this.props.theme);
     this.instance.on('change', this.valueChanged);
     this.focus();
   },
 
-  componentWillMount() {
-    this.componentWillReceiveProps = debounce(this.componentWillReceiveProps, 0);
-  },
-
   componentWillUnmount() {
-    if (this.instance) this.instance.toTextArea();
+    if (this.instance) {
+      this.instance.toTextArea();
+    }
   },
 
   componentWillReceiveProps(next) {
-    if (this.instance &&
-        next.value !== undefined &&
-        convertLineEndings(this.instance.getValue()) !== convertLineEndings(next.value)) {
+    if (
+      this.instance &&
+      next.value !== undefined &&
+      this.instance.getValue() !== next.value
+    ) {
       if (this.props.preserveScrollPosition) {
         const previous = this.instance.getScrollInfo();
         this.instance.setValue(next.value);
@@ -71,16 +66,13 @@ const CodeMirror = React.createClass({
       }
     }
 
-    if (typeof next.options === 'object') {
-      Object.keys(next.options).forEach(key => {
-        this.instance.setOption(key, next.options[key]);
-      });
-    }
-
-    // silly
     if (next.theme) {
-      this.instance.setOption('theme', next.theme);
+      this.updateTheme(next.theme);
     }
+  },
+
+  updateTheme(name) {
+    this.instance.setOption('theme', name);
   },
 
   valueChanged(instance, change) {
@@ -91,17 +83,21 @@ const CodeMirror = React.createClass({
 
   render() {
     return (
-      <div className={this.props.className}>
+      <div className='w-100 h-100'>
         <textarea
           ref={(textarea) => this.textarea = textarea}
           defaultValue={this.props.value}
-          autoComplete="off"
+          autoComplete='off'
         />
       </div>
     );
   },
 
-  focus() { if (this.instance) this.instance.focus(); },
+  focus() {
+    if (this.instance) {
+      this.instance.focus();
+    }
+  },
 
 });
 
