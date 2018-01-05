@@ -7,6 +7,7 @@ import discordnet from '../snippets/discordnet';
 import dsharpplus from '../snippets/dsharpplus';
 import dsharpplusEmbedbuilder from '../snippets/dsharpplus-embedbuilder';
 import discordpy from '../snippets/discordpy';
+import discordpyRewrite from '../discordpy-rewrite';
 import discordie from '../snippets/discordie';
 import discordjs from '../snippets/discordjs';
 import discordio from '../snippets/discordio';
@@ -21,6 +22,7 @@ const libraries = {
   'dotnet_dsharpplus': dsharpplus,
   'dotnet_dsharpplusEmbedbuilder': dsharpplusEmbedbuilder,
   'python_discord-py': discordpy,
+  'python_discord-py-rewrite': discordpyRewrite,
   'js_discordie': discordie,
   'js_discordjs': discordjs,
   'js_discordio': discordio,
