@@ -5,6 +5,7 @@ import Button from './button';
 import ModalContainer from './modalcontainer';
 import AboutModal from './aboutmodal';
 import CodeModal from './codemodal';
+import WarningModal from './warningmodal';
 import CodeMirror from './codemirror';
 import DiscordView from './discordview';
 
@@ -32,34 +33,47 @@ function FooterButton(props) {
   return <Button {...props} className='shadow-1 shadow-hover-2 shadow-up-hover' />;
 }
 
+const initialContent = 'this `supports` __a__ **subset** *of* ~~markdown~~ 😃 ```js\nfunction foo(bar) {\n  console.log(bar);\n}\n\nfoo(1);```';
 const initialColor = Math.floor(Math.random() * 0xFFFFFF);
+const initialEmbed = {
+  title: 'title ~~(did you know you can have markdown here too?)~~',
+  description: 'this supports [named links](https://discordapp.com) on top of the previously shown subset of markdown. ```\nyes, even code blocks```',
+  url: 'https://discordapp.com',
+  color: initialColor,
+  timestamp: new Date().toISOString(),
+  footer: { icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png', text: 'footer text' },
+  thumbnail: { url: 'https://cdn.discordapp.com/embed/avatars/0.png' },
+  image: { url: 'https://cdn.discordapp.com/embed/avatars/0.png' },
+  author: {
+    name: 'author name',
+    url: 'https://discordapp.com',
+    icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png'
+  },
+  fields: [
+    { name: '🤔', value: 'some of these properties have certain limits...' },
+    { name: '😱', value: 'try exceeding some of them!' },
+    { name: '🙄', value: 'an informative error should show up, and this view will remain as-is until all issues are fixed' },
+    { name: '<:thonkang:219069250692841473>', value: 'these last two', inline: true },
+    { name: '<:thonkang:219069250692841473>', value: 'are inline fields', inline: true }
+  ]
+};
 
 // this is just for convenience.
 // TODO: vary this more?
 const initialCode = JSON.stringify({
-  content: 'this `supports` __a__ **subset** *of* ~~markdown~~ 😃 ```js\nfunction foo(bar) {\n  console.log(bar);\n}\n\nfoo(1);```',
-  embed: {
-    title: 'title ~~(did you know you can have markdown here too?)~~',
-    description: 'this supports [named links](https://discordapp.com) on top of the previously shown subset of markdown. ```\nyes, even code blocks```',
-    url: 'https://discordapp.com',
-    color: initialColor,
-    timestamp: new Date().toISOString(),
-    footer: { icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png', text: 'footer text' },
-    thumbnail: { url: 'https://cdn.discordapp.com/embed/avatars/0.png' },
-    image: { url: 'https://cdn.discordapp.com/embed/avatars/0.png' },
-    author: {
-      name: 'author name',
-      url: 'https://discordapp.com',
-      icon_url: 'https://cdn.discordapp.com/embed/avatars/0.png'
+  content: initialContent,
+  embed: initialEmbed
+}, null, '  ');
+
+const webhookExample = JSON.stringify({
+  content: `${initialContent}\nWhen sending webhooks, you can have [masked links](https://discordapp.com) in here!`,
+  embeds: [
+    initialEmbed,
+    {
+      title: 'Woah',
+      description: 'You can also have multiple embeds!\n**NOTE**: The color picker does not work with multiple embeds (yet).'
     },
-    fields: [
-      { name: '🤔', value: 'some of these properties have certain limits...' },
-      { name: '😱', value: 'try exceeding some of them!' },
-      { name: '🙄', value: 'an informative error should show up, and this view will remain as-is until all issues are fixed' },
-      { name: '<:thonkang:219069250692841473>', value: 'these last two', inline: true },
-      { name: '<:thonkang:219069250692841473>', value: 'are inline fields', inline: true }
-    ]
-  }
+  ]
 }, null, '  ');
 
 const App = React.createClass({
@@ -76,6 +90,9 @@ const App = React.createClass({
       error: null,
       colorPickerShowing: false,
       embedColor: extractRGB(initialColor),
+
+      // TODO: put in local storage?
+      webhookExampleWasShown: false,
     };
   },
 
@@ -136,7 +153,21 @@ const App = React.createClass({
   },
 
   toggleWebhookMode() {
-    this.validateInput(this.state.input, !this.state.webhookMode);
+    if (!this.state.webhookExampleWasShown) {
+      this.setState({ currentModal: WarningModal });
+    } else {
+      this.validateInput(this.state.input, !this.state.webhookMode);
+    }
+  },
+
+  displayWebhookExample() {
+    this.setState({ currentModal: null, webhookExampleWasShown: true });
+    this.validateInput(webhookExample, true);
+  },
+
+  dismissWebhookExample() {
+    this.setState({ currentModal: null, webhookExampleWasShown: true });
+    this.validateInput(this.state.input, true);
   },
 
   toggleTheme() {
@@ -215,6 +246,8 @@ const App = React.createClass({
         </div>
 
         <ModalContainer
+          yes={this.displayWebhookExample}
+          no={this.dismissWebhookExample}
           close={this.closeModal}
           data={this.state.data}
           webhookMode={this.state.webhookMode}
