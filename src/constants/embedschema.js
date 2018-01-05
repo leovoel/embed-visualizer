@@ -119,7 +119,9 @@ const webhookMessageSchema = {
     'username': { 'type': 'string', 'maxLength': 256 },
     'avatar_url': { 'type': 'string' },
     'content': { 'type': 'string', 'maxLength': 2000, 'trim': true },
-    'embeds': { 'type': 'array', 'maxItems': 10, 'items': embedSchema }
+    'embeds': { 'type': 'array', 'maxItems': 10, 'items': embedSchema },
+    'tts': { 'type': 'boolean' },
+    'file': {}
   },
   'atLeastOneOf': ['content', 'embeds']
 };
