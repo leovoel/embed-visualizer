@@ -5,10 +5,6 @@ import { parse, parseAllowLinks, jumboify } from './markdown';
 
 
 const MessageTimestamp = React.createClass({
-  getInitialState() {
-    return { moment: Moment() };
-  },
-
   getDefaultProps() {
     return { compactMode: false };
   },
@@ -27,7 +23,8 @@ const MessageTimestamp = React.createClass({
 
   render() {
     const { compactMode } = this.props;
-    const computed = compactMode ? this.state.moment.format('LT') : this.state.moment.calendar();
+    const m = Moment();
+    const computed = compactMode ? m.format('LT') : m.calendar();
 
     return <span className='timestamp'>{computed}</span>;
   },
