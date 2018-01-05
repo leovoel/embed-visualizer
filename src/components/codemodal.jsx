@@ -121,5 +121,9 @@ const CodeModal = React.createClass({
   },
 });
 
+function wrapper(props) {
+  return <CodeModal {...props} />;
+}
 
-export default CodeModal;
+
+export default wrapper;

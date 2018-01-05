@@ -27,15 +27,6 @@ const FooterButton = (props) => {
   return <Button {...props} className='shadow-1 shadow-hover-2 shadow-up-hover' />;
 };
 
-const Modals = {
-  About(props) {
-    return <AboutModal {...props} />;
-  },
-  Code(props) {
-    return <CodeModal {...props} />;
-  },
-};
-
 // this is just for convenience.
 // TODO: vary this more?
 const initialCode = JSON.stringify({
@@ -143,11 +134,11 @@ const App = React.createClass({
   },
 
   openAboutModal() {
-    this.setState({ currentModal: Modals.About });
+    this.setState({ currentModal: AboutModal });
   },
 
   openCodeModal() {
-    this.setState({ currentModal: Modals.Code });
+    this.setState({ currentModal: CodeModal });
   },
 
   closeModal() {
