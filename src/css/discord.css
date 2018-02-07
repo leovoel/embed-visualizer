@@ -885,6 +885,13 @@
   letter-spacing: 0
 }
 
+.embed .embed-footer .footer-bullet {
+    display: inline-block;
+    margin: 0 4px;
+    color: #4f545c;
+    font-weight: 700;
+}
+
 .embed .embed-footer-icon {
   margin-right: 10px;
   height: 18px;
