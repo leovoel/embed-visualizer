@@ -230,7 +230,7 @@ const baseRules = {
   customEmoji: {
     order: SimpleMarkdown.defaultRules.text.order,
     match(source) {
-      return /^<:(\w+):(\d+)>/.exec(source);
+      return /^<a?:(\w+):(\d+)>/.exec(source);
     },
     parse(capture) {
       const name = capture[1];
