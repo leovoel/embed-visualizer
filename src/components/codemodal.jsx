@@ -28,7 +28,7 @@ const libraries = {
   'js_eris': eris,
   'php_restcord': restcord,
   'ruby_discordrb': discordrb,
-  'ruby_discordcr': discordcr,
+  'crystal_discordcr': discordcr,
   'java_discord4j': discord4j,
   'java_jda': jda,
 };
