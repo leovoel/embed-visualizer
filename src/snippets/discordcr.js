@@ -37,7 +37,7 @@ export default {
         colour: data.embed.color ? `0x${data.embed.color.toString(16)}` : null,
         url: data.embed.url ? JSON.stringify(data.embed.url) : null,
         description: data.embed.description ? JSON.stringify(data.embed.description) : null,
-        timestamp: timestamp ? `Time.epoch(${timestamp})` : null
+        timestamp: timestamp ? `Time.unix(${timestamp})` : null
       };
 
       var pushed = false
