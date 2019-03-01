@@ -12,8 +12,8 @@ import discordjs from '../snippets/discordjs';
 import discordio from '../snippets/discordio';
 import restcord from '../snippets/restcord';
 import eris from '../snippets/eris';
-import discordrb from '../snippets/discordrb';
 import discordcr from '../snippets/discordcr';
+import discordrb from '../snippets/discordrb';
 import jda from '../snippets/jda';
 
 
@@ -27,8 +27,8 @@ const libraries = {
   'js_discordio': discordio,
   'js_eris': eris,
   'php_restcord': restcord,
-  'ruby_discordrb': discordrb,
   'crystal_discordcr': discordcr,
+  'ruby_discordrb': discordrb,
   'java_discord4j': discord4j,
   'java_jda': jda,
 };
