@@ -223,6 +223,8 @@ const App = React.createClass({
             </div>
             <div className='vh-100 h-auto-l w-100 w-50-l pa4 pl3-l pb0'>
               <DiscordView
+                username={this.state.data.username}
+                avatar_url={this.state.data.avatar_url}
                 data={this.state.data}
                 error={this.state.error}
                 webhookMode={this.state.webhookMode}
