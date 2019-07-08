@@ -44,7 +44,7 @@ function generateAuthor(data) {
 function generateFields(data) {
     return data.map(function(x) {
         if (x.inline) {
-            return `\t.AddInlineField(${JSON.stringify(x.name)}, ${JSON.stringify(x.value)})`
+            return `\t.AddField(${JSON.stringify(x.name)}, ${JSON.stringify(x.value)}, true)`
         } else {
             return `\t.AddField(${JSON.stringify(x.name)}, ${JSON.stringify(x.value)})`
         }
