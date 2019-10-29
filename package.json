@@ -19,7 +19,7 @@
     "react-addons-css-transition-group": "^15.4.2",
     "react-color": "^2.13.8",
     "react-dom": "^15.4.2",
-    "simple-markdown": "^0.2.1",
+    "simple-markdown": "^0.6.1",
     "twemoji": "^2.2.3"
   },
   "scripts": {
