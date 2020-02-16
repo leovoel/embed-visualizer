@@ -36,7 +36,7 @@ export default {
 
     const pre = `const embed = new MessageEmbed()\n  `;
     const result = pre + output.join('\n  ');
-    if (data.content) return `${result};\nchannel.send(${JSON.stringify(data.content)}, embed);`;
+    if (data.content) return `${result};\nchannel.send(${JSON.stringify(data.content)}, { embed });`;
     else return `${result}\nchannel.send(embed);`;
   }
 };
