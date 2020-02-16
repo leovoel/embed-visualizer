@@ -9,6 +9,7 @@ import dsharpplusEmbedbuilder from '../snippets/dsharpplus-embedbuilder';
 import discordpy from '../snippets/discordpy';
 import discordie from '../snippets/discordie';
 import discordjs from '../snippets/discordjs';
+import discordjsMessageEmbed from '../snippets/discordjs-messageembed';
 import discordio from '../snippets/discordio';
 import restcord from '../snippets/restcord';
 import eris from '../snippets/eris';
@@ -23,6 +24,7 @@ const libraries = {
   'python_discord-py': discordpy,
   'js_discordie': discordie,
   'js_discordjs': discordjs,
+  'js_discordjsMessageEmbed': discordjsMessageEmbed,
   'js_discordio': discordio,
   'js_eris': eris,
   'php_restcord': restcord,
