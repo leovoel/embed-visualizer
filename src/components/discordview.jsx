@@ -4,6 +4,8 @@ import Embed from "./embed";
 import { parse, parseAllowLinks, jumboify } from "./markdown";
 import Invite from "./invite";
 
+const INVITE_REGEX = /https:\/\/discord\.gg\/([a-zA-Z0-9]+)/g;
+
 const MessageTimestamp = class extends React.Component {
   static defaultProps = { compactMode: false };
 
@@ -133,7 +135,6 @@ const DiscordView = class extends React.Component {
   };
 
   render() {
-    console.log(this.props);
     const {
       compactMode,
       darkTheme,
@@ -144,6 +145,13 @@ const DiscordView = class extends React.Component {
       data: { content, embed, embeds },
     } = this.props;
 
+    const invites = [];
+    if (content) {
+      let m;
+      while ((m = INVITE_REGEX.exec(content))) {
+        if (!invites.includes(m[1])) invites.push(m[1]);
+      }
+    }
     const bgColor = darkTheme ? "bg-discord-dark" : "bg-discord-light";
     const cls = `w-100 h-100 br2 flex flex-column white overflow-hidden ${bgColor}`;
 
@@ -170,13 +178,19 @@ const DiscordView = class extends React.Component {
                     compactMode={compactMode}
                     webhookMode={webhookMode}
                   />
-                  {/* <Invite inviteCode={"otaku"} /> */}
                 </div>
                 {embed ? (
                   <Embed {...embed} />
                 ) : (
                   embeds && embeds.map((e, i) => <Embed key={i} {...e} />)
                 )}
+                {invites.length > 0 ? (
+                  <div className={"di-root-container"}>
+                    {invites.map((e) => (
+                      <Invite key={e.key} inviteCode={e}></Invite>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>

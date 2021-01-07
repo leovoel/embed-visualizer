@@ -1117,14 +1117,22 @@
   color: #00b0f4;
   text-decoration: none;
 }
-.di {
-  background: rgba(15, 15, 15, 0.6);
-  border: 1px solid rgba(45, 45, 45, 0);
+.di-iroot {
+  background: #2f3136;
   border-radius: 3px;
-  margin-top: 8px;
-  padding: 10px;
-  width: 410px;
-  margin: 30px auto 0px 40px;
+  padding: 16px;
+  width: 432px;
+}
+.di-root-container {
+  display: grid;
+  grid-auto-flow: row;
+  grid-row-gap: 0.25rem;
+  text-indent: 0;
+  min-height: 0;
+  min-width: 0;
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  position: relative;
 }
 .di-title {
   color: #8e9297;
@@ -1146,7 +1154,7 @@
   border-radius: 15px;
   flex: 0 0 auto;
   height: 50px;
-  margin-right: 10px;
+  margin-right: 16px;
   width: 50px;
 }
 
@@ -1161,7 +1169,6 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
-  max-width: 223px;
 }
 
 .di-details div {
@@ -1217,7 +1224,7 @@
   background-color: #43b581;
   border: none;
   border-radius: 3px;
-  color: #ffffff;
+  color: #ffffff !important;
   cursor: pointer;
   display: flex;
   font-size: 14px;
@@ -1233,8 +1240,6 @@
   position: relative;
   transition: background-color 0.17s ease, color 0.17s ease;
   user-select: none;
-  position: relative;
-  top: -11px;
 }
 
 /* For mobile support and md-7 without colliding */

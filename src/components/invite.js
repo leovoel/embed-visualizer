@@ -49,7 +49,7 @@ const DiscordInvite = ({ inviteCode }) => {
   if (!invite) return null;
 
   return (
-    <div className="di grow">
+    <div className="di-iroot">
       <h5 className="di-title">You've been invited to join a server</h5>
       <div className="di-content di-flex">
         <div
@@ -75,7 +75,6 @@ const DiscordInvite = ({ inviteCode }) => {
             </span>
           </div>
         </div>
-        <div className="di-break"></div>
         <a
           href={`https://discord.gg/${invite.code}`}
           target="_blank"
