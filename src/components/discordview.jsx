@@ -4,7 +4,7 @@ import Embed from "./embed";
 import { parse, parseAllowLinks, jumboify } from "./markdown";
 import Invite from "./invite";
 
-const INVITE_REGEX = /https:\/\/discord\.gg\/([a-zA-Z0-9]+)/g;
+const INVITE_REGEX = /discord(?:(?:app)?\.com\/invite|\.gg(?:\/invite)?)\/([\w-]{2,255})/gi;
 
 const MessageTimestamp = class extends React.Component {
   static defaultProps = { compactMode: false };
