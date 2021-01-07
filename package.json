@@ -6,8 +6,16 @@
   "private": true,
   "homepage": "https://leovoel.github.io/embed-visualizer/",
   "devDependencies": {
+    "husky": "^4.3.7",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0",
     "react-scripts": "0.8.5",
     "rimraf": "^2.5.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "dependencies": {
     "ajv": "^4.11.2",
