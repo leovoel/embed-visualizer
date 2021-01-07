@@ -100,27 +100,25 @@ const webhookExample = JSON.stringify(
   "  "
 );
 
-const App = React.createClass({
+const App = class extends React.Component {
   // TODO: serialize input, webhookMode, compactMode and darkTheme to query string?
 
-  getInitialState() {
-    return {
-      webhookMode: false,
-      compactMode: false,
-      darkTheme: true,
-      currentModal: null,
-      input: initialCode,
-      data: {},
-      error: null,
-      colorPickerShowing: false,
-      embedColor: extractRGB(initialColor),
+  state = {
+    webhookMode: false,
+    compactMode: false,
+    darkTheme: true,
+    currentModal: null,
+    input: initialCode,
+    data: {},
+    error: null,
+    colorPickerShowing: false,
+    embedColor: extractRGB(initialColor),
 
-      // TODO: put in local storage?
-      webhookExampleWasShown: false,
-    };
-  },
+    // TODO: put in local storage?
+    webhookExampleWasShown: false,
+  };
 
-  validateInput(input, webhookMode) {
+  validateInput = (input, webhookMode) => {
     const validator = webhookMode ? validators.webhook : validators.regular;
 
     let parsed;
@@ -151,62 +149,62 @@ const App = React.createClass({
     // debounce validation, we need to take some of these out)
     // but for now that's what we do.
     this.setState({ input, data, error, webhookMode, embedColor });
-  },
+  };
 
   componentWillMount() {
     this.validateInput(this.state.input, this.state.webhookMode);
-  },
+  }
 
-  onCodeChange(value, change) {
+  onCodeChange = (value, change) => {
     // for some reason this fires without the value changing...?
     if (value !== this.state.input) {
       this.validateInput(value, this.state.webhookMode);
     }
-  },
+  };
 
-  openAboutModal() {
+  openAboutModal = () => {
     this.setState({ currentModal: AboutModal });
-  },
+  };
 
-  openCodeModal() {
+  openCodeModal = () => {
     this.setState({ currentModal: CodeModal });
-  },
+  };
 
-  closeModal() {
+  closeModal = () => {
     this.setState({ currentModal: null });
-  },
+  };
 
-  toggleWebhookMode() {
+  toggleWebhookMode = () => {
     this.setState({ currentModal: WarningModal });
-  },
+  };
 
-  displayWebhookExample() {
+  displayWebhookExample = () => {
     this.setState({ currentModal: null, webhookExampleWasShown: true }, () => {
       this.validateInput(
         this.state.webhookMode ? initialCode : webhookExample,
         !this.state.webhookMode
       );
     });
-  },
+  };
 
-  dismissWebhookExample() {
+  dismissWebhookExample = () => {
     this.setState({ currentModal: null, webhookExampleWasShown: true });
     this.validateInput(this.state.input, true);
-  },
+  };
 
-  toggleTheme() {
+  toggleTheme = () => {
     this.setState({ darkTheme: !this.state.darkTheme });
-  },
+  };
 
-  toggleCompactMode() {
+  toggleCompactMode = () => {
     this.setState({ compactMode: !this.state.compactMode });
-  },
+  };
 
-  openColorPicker() {
+  openColorPicker = () => {
     this.setState({ colorPickerShowing: !this.state.colorPickerShowing });
-  },
+  };
 
-  colorChange(color) {
+  colorChange = (color) => {
     let val = combineRGB(color.rgb.r, color.rgb.g, color.rgb.b);
     if (val === 0) val = 1; // discord wont accept 0
     const input = this.state.input.replace(
@@ -226,7 +224,7 @@ const App = React.createClass({
       } catch (ignored) {}
     }
     this.validateInput(input, this.state.webhookMode);
-  },
+  };
 
   render() {
     const webhookModeLabel = `${
@@ -312,7 +310,7 @@ const App = React.createClass({
         />
       </main>
     );
-  },
-});
+  }
+};
 
 export default App;
