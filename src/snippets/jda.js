@@ -1,87 +1,126 @@
 export default {
   name: "JDA (Java)",
   language: "java",
-
-  generateFrom(data) {
-    const result = [];
-
-    if (data.content) {
-      result.push(`new MessageBuilder()`);
-      result.push(`  .append(${JSON.stringify(data.content)})`)
+  webhook_support: true,
+  generateFrom(data, isWebhook) {
+    const embeds = [];
+    const toIterate = isWebhook ? data.embeds || [] : [data.embed];
+    const items = [];
+    if (isWebhook) {
+      items.push(
+        `WebhookMessageBuilder builder = new WebhookMessageBuilder();`
+      );
+      if (data.content) {
+        items.push(`builder.setContent(${JSON.stringify(data.content)});`);
+      }
+    } else {
+      items.push(`new MessageBuilder()`);
+      if (data.content) {
+        items.push(`  .append(${JSON.stringify(data.content)})`);
+      }
     }
+    toIterate.forEach((item, index) => {
+      if (!item) return;
+      const result = [];
 
-    if (data.embed) {
-      result.push(`  .setEmbed(new EmbedBuilder()`);
+      if (item) {
+        if (isWebhook)
+          result.push(`  MessageEmbed embed${index + 1} = new EmbedBuilder()`);
+        else result.push(`  .setEmbed(new EmbedBuilder()`);
 
-      if (data.embed.title) {
-        const title = JSON.stringify(data.embed.title);
-        if (data.embed.url) {
-          const url = JSON.stringify(data.embed.url);
-          if (title) {
-            result.push(`    .setTitle(${title}, ${url})`)
+        if (item.title) {
+          const title = JSON.stringify(item.title);
+          if (item.url) {
+            const url = JSON.stringify(item.url);
+            if (title) {
+              result.push(`    .setTitle(${title}, ${url})`);
+            }
+          } else if (title) {
+            result.push(`    .setTitle(${title})`);
           }
         }
-        else if (title) {
-          result.push(`    .setTitle(${title})`)
+
+        if (item.description) {
+          const description = JSON.stringify(item.description);
+          if (description) {
+            result.push(`    .setDescription(${description})`);
+          }
         }
-      }
 
-      if (data.embed.description) {
-        const description = JSON.stringify(data.embed.description);
-        if (description) {
-          result.push(`    .setDescription(${description})`)
+        if (item.color) {
+          result.push(`    .setColor(new Color(${item.color}))`);
         }
-      }
 
-      if (data.embed.color) {
-        result.push(`    .setColor(new Color(${data.embed.color}))`)
-      }
-
-      if (data.embed.timestamp) {
-        const timestamp = JSON.stringify(data.embed.timestamp);
-        result.push(`    .setTimestamp(OffsetDateTime.parse(${timestamp}))`)
-      }
-
-      if (data.embed.footer) {
-        const text = data.embed.footer.text ? JSON.stringify(data.embed.footer.text) : null;
-        const icon_url = data.embed.footer.icon_url ? JSON.stringify(data.embed.footer.icon_url) : null;
-        result.push(`    .setFooter(${text}, ${icon_url})`)
-      }
-
-      if (data.embed.thumbnail) {
-        const thumbnail = data.embed.thumbnail.url ? JSON.stringify(data.embed.thumbnail.url) : null;
-        if (thumbnail) {
-          result.push(`    .setThumbnail(${thumbnail})`)
+        if (item.timestamp) {
+          const timestamp = JSON.stringify(item.timestamp);
+          result.push(`    .setTimestamp(OffsetDateTime.parse(${timestamp}))`);
         }
-      }
 
-      if (data.embed.image) {
-        const image = data.embed.image.url ? JSON.stringify(data.embed.image.url) : null;
-        if (image) {
-          result.push(`    .setImage(${image})`)
+        if (item.footer) {
+          const text = item.footer.text
+            ? JSON.stringify(item.footer.text)
+            : null;
+          const icon_url = item.footer.icon_url
+            ? JSON.stringify(item.footer.icon_url)
+            : null;
+          result.push(`    .setFooter(${text}, ${icon_url})`);
         }
-      }
 
-      if (data.embed.author) {
-        const name = data.embed.author.name ? JSON.stringify(data.embed.author.name) : null;
-        const url = data.embed.author.url ? JSON.stringify(data.embed.author.url) : null;
-        const icon_url = data.embed.author.icon_url ? JSON.stringify(data.embed.author.icon_url) : null;
-        result.push(`    .setAuthor(${name}, ${url}, ${icon_url})`)
-      }
-
-      if (data.embed.fields) {
-        for (const field of data.embed.fields) {
-          const name = field.name ? JSON.stringify(field.name) : null;
-          const value = field.value ? JSON.stringify(field.value) : null;
-          const inline = field.inline !== undefined ? field.inline.toString() : `false`;
-          result.push(`    .addField(${name}, ${value}, ${inline})`)
+        if (item.thumbnail) {
+          const thumbnail = item.thumbnail.url
+            ? JSON.stringify(item.thumbnail.url)
+            : null;
+          if (thumbnail) {
+            result.push(`    .setThumbnail(${thumbnail})`);
+          }
         }
-      }
 
-      result.push(`    .build())`);
+        if (item.image) {
+          const image = item.image.url ? JSON.stringify(item.image.url) : null;
+          if (image) {
+            result.push(`    .setImage(${image})`);
+          }
+        }
+
+        if (item.author) {
+          const name = item.author.name
+            ? JSON.stringify(item.author.name)
+            : null;
+          const url = item.author.url ? JSON.stringify(item.author.url) : null;
+          const icon_url = item.author.icon_url
+            ? JSON.stringify(item.author.icon_url)
+            : null;
+          result.push(`    .setAuthor(${name}, ${url}, ${icon_url})`);
+        }
+
+        if (item.fields) {
+          for (const field of item.fields) {
+            const name = field.name ? JSON.stringify(field.name) : null;
+            const value = field.value ? JSON.stringify(field.value) : null;
+            const inline =
+              field.inline !== undefined ? field.inline.toString() : `false`;
+            result.push(`    .addField(${name}, ${value}, ${inline})`);
+          }
+        }
+        if (isWebhook) result.push(`    .build()`);
+        else result.push(`    .build())`);
+      }
+      embeds.push(result.join("\n"));
+    });
+    if (!isWebhook) {
+      const merged = [...items, ...embeds, `  .build();`];
+      return merged.join("\n");
     }
-
-    result.push(`  .build();`);
-    return result.join('\n');
-  }
+    const merged = [...items, ...embeds];
+    if (embeds.length > 0) {
+      merged.push(`builder.addEmbeds(${Array(embeds.length)
+        .fill()
+        .map((_, index) => `embed${index + 1}`)
+        .join(", ")})
+       .setUsername("Username");`);
+    }
+    merged.push(`WebhookMessage message = builder.build();
+client.send(message);`);
+    return merged.join("\n");
+  },
 };

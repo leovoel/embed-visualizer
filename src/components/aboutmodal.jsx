@@ -1,11 +1,10 @@
-import React from 'react';
-import Modal from './modal';
-import SimpleMarkdown from 'simple-markdown';
-import logo from '../images/logo.png';
-
+import React from "react";
+import Modal from "./modal";
+import SimpleMarkdown from "simple-markdown";
+import logo from "../images/logo.png";
 
 // TODO: move this link out of here?
-const GITHUB_REPO = 'https://github.com/leovoel/embed-visualizer';
+const GITHUB_REPO = "https://github.com/leovoel/embed-visualizer";
 
 const aboutText = `
 -= Visualizer and validator for [Discord embeds][embed-docs]. =-
@@ -63,10 +62,9 @@ The main difference is that instead of:
   of it back, and maybe do minor edits.
   In the future some sort of form input mode could be added in.
 
-- Invites are not rendered
 - Mentions are not rendered
 
-  This is purely out of laziness, although there's not much that can go wrong with them.  
+  This is purely out of laziness, although there's not much that can go wrong with them.
   Keep in mind that in embeds, mentions are rendered but do not notify anyone.
 
 - Images may not render exactly the same
@@ -90,7 +88,7 @@ The main difference is that instead of:
 ### Libraries used (thanks!):
 
 -----------------------------
-  
+
 - [React](https://facebook.github.io/react/)
 - [Ajv](https://epoberezkin.github.io/ajv/)
 - [Moment.js](https://momentjs.com)
@@ -116,12 +114,18 @@ const rules = {
     order: SimpleMarkdown.defaultRules.paragraph.order,
 
     parse(capture, recurseParse, state) {
-      return { content: SimpleMarkdown.parseInline(recurseParse, capture[1], state) };
+      return {
+        content: SimpleMarkdown.parseInline(recurseParse, capture[1], state),
+      };
     },
 
     react(node, recurseOutput, state) {
-      return <div key={state.key} className='db b f3 mv2 tc'>{recurseOutput(node.content, state)}</div>;
-    }
+      return (
+        <div key={state.key} className="db b f3 mv2 tc">
+          {recurseOutput(node.content, state)}
+        </div>
+      );
+    },
   },
 
   paragraph: {
@@ -136,11 +140,11 @@ const rules = {
     react(node, recurseOutput, state) {
       return (
         <a
-          className='link blurple underline-hover'
+          className="link blurple underline-hover"
           href={SimpleMarkdown.sanitizeUrl(node.target)}
           title={node.title}
           key={state.key}
-          target='_blank'
+          target="_blank"
         >
           {recurseOutput(node.content, state)}
         </a>
@@ -151,43 +155,42 @@ const rules = {
   list: {
     ...SimpleMarkdown.defaultRules.list,
     react(node, recurseOutput, state) {
-      return React.createElement(
-        node.ordered ? 'ol' : 'ul',
-        {
-          start: node.start,
-          key: state.key,
-          className: 'mb4 pl4',
-          children: node.items.map((item, i) => {
-            return <li key={i}>{recurseOutput(item, state)}</li>;
-          })
-        }
-      );
+      return React.createElement(node.ordered ? "ol" : "ul", {
+        start: node.start,
+        key: state.key,
+        className: "mb4 pl4",
+        children: node.items.map((item, i) => {
+          return <li key={i}>{recurseOutput(item, state)}</li>;
+        }),
+      });
     },
   },
 
   hr: {
     ...SimpleMarkdown.defaultRules.hr,
     react(node, recurseOutput, state) {
-      return <hr className='b--solid b--light-gray ma0' key={state.key} />;
-    }
+      return <hr className="b--solid b--light-gray ma0" key={state.key} />;
+    },
   },
 };
 
 const parser = SimpleMarkdown.parserFor(rules);
-const renderer = SimpleMarkdown.reactFor(SimpleMarkdown.ruleOutput(rules, 'react'));
+const renderer = SimpleMarkdown.reactFor(
+  SimpleMarkdown.ruleOutput(rules, "react")
+);
 
 const renderAboutText = (input) => {
-  input += '\n\n';
+  input += "\n\n";
   return renderer(parser(input, { inline: false }));
 };
 
 const AboutModal = (props) => {
   return (
-    <Modal title='About' maxWidth='80ch' maxHeight='90%' {...props}>
-      <div className='ma3 nested-copy-seperator nested-copy-line-height'>
-        <div className='center w4'>
-          <a href={GITHUB_REPO} title='Embed Visualizer' target='_blank'>
-            <img src={logo} alt='Embed Visualizer' />
+    <Modal title="About" maxWidth="80ch" maxHeight="90%" {...props}>
+      <div className="ma3 nested-copy-seperator nested-copy-line-height">
+        <div className="center w4">
+          <a href={GITHUB_REPO} title="Embed Visualizer" target="_blank">
+            <img src={logo} alt="Embed Visualizer" />
           </a>
         </div>
         {renderAboutText(aboutText)}
@@ -195,6 +198,5 @@ const AboutModal = (props) => {
     </Modal>
   );
 };
-
 
 export default AboutModal;

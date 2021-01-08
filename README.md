@@ -1,5 +1,4 @@
-Embed Visualizer
-================
+# Embed Visualizer
 
 ![demo gif](http://i.imgur.com/2wAb2d3.gif)
 
@@ -16,17 +15,20 @@ export default {
   // see https://highlightjs.readthedocs.io/en/latest/css-classes-reference.html#language-names-and-aliases
   language: 'coolprogramminglanguage',
 
+  // Decides if the library has webhook support or not.
+  // If not set to false and a info will be displayed
+  webhook_support: true,
+
   // actual generator
+  // If webhook mode is enabled and supported the list of provided embeds will be in the "embeds" property, otherwise the single embed will be in "embed"
   // data is just a javascript object that looks like this:
-  // { "content": "message content...", "embed": { ... } }
-  generateFrom(data) {
+  // { "content": "message content...", "embed": { ... }, "embeds": [ { ... }, { ...}] }
+  // isWebhook will (if webhook mode is supported) be a boolean indicating if the mode is set to webhook(true) or normal(false).
+  // if theres no support, this param may be omited
+  generateFrom(data, isWebhook) {
     ...
   },
 };
 ```
-
-Currently, we don't really take in account "webhook mode" since most libraries don't
-really support that directly. If in the future most of them end up supporting it,
-we can start passing that down to the `generateFrom` function, so that it can emit something else.
 
 [embed docs]: https://discordapp.com/developers/docs/resources/channel#embed-object
