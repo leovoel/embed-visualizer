@@ -1169,6 +1169,7 @@
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: center;
+  overflow: hidden;
 }
 
 .di-details div {
@@ -1176,10 +1177,18 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
+.di-d-name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
 .di-d-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
   color: #f6f6f6;
   font-weight: 600;
+  min-width: 0;
   font-size: 16px;
   line-height: 20px;
   margin-bottom: 4px;
@@ -1240,6 +1249,10 @@
   position: relative;
   transition: background-color 0.17s ease, color 0.17s ease;
   user-select: none;
+}
+.di-button:hover {
+  background-color: #3ca374;
+  text-decoration: none !important;
 }
 
 /* For mobile support and md-7 without colliding */

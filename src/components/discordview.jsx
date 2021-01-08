@@ -185,9 +185,16 @@ const DiscordView = class extends React.Component {
                   embeds && embeds.map((e, i) => <Embed key={i} {...e} />)
                 )}
                 {invites.length > 0 ? (
-                  <div className={"di-root-container"}>
+                  <div
+                    className={"di-root-container"}
+                    style={compactMode ? { paddingLeft: "100px" } : null}
+                  >
                     {invites.map((e) => (
-                      <Invite key={e.key} inviteCode={e}></Invite>
+                      <Invite
+                        key={e.key}
+                        inviteCode={e}
+                        isLightMode={!darkTheme}
+                      ></Invite>
                     ))}
                   </div>
                 ) : null}
