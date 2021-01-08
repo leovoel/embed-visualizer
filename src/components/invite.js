@@ -5,7 +5,6 @@ const DiscordInvite = ({ inviteCode, isLightMode }) => {
   useEffect(() => {
     const key = `discordInvite:${inviteCode}`;
 
-    // Check and return from cache first :)
     const cacheVal = localStorage.getItem(key);
     if (cacheVal !== null) {
       try {
@@ -14,7 +13,6 @@ const DiscordInvite = ({ inviteCode, isLightMode }) => {
           if (Date.now() < cache.expires) {
             return setInvite(cache.value);
           } else {
-            // It expired so we won't return it, let's fetch it again!
             localStorage.removeItem(key);
           }
         }
@@ -32,8 +30,6 @@ const DiscordInvite = ({ inviteCode, isLightMode }) => {
           setInvite(null);
           return;
         }
-
-        // Save in cache - set it to expire in 3 hours :)
         const cache = {
           value: content,
           expires: Date.now() + 1000 * 60 * 60 * 3,
