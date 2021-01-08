@@ -22,8 +22,6 @@ function WarningModal(props) {
           example? <strong>(this will erase your previous input)</strong>
         </p>
 
-        <p className="f6">You will not see this message again.</p>
-
         <div className="tc">
           <WarningButton
             label="Yes"

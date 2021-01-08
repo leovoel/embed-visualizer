@@ -64,29 +64,55 @@ function generateFields(data) {
 export default {
   name: "Discord.Net (C#)",
   language: "csharp",
-  generateFrom(data) {
-    if (data.embed) {
+  webhook_support: true,
+  generateFrom(data, isWebhook) {
+    const embeds = [];
+    const toIterate = isWebhook ? data.embeds || [] : [data.embed];
+
+    toIterate.forEach((item, index) => {
+      if (!item) return;
       let result = [];
-      result.push("var builder = new EmbedBuilder()");
-      for (let key in data.embed) {
+      result.push(
+        `var ${
+          isWebhook ? `builder${index + 1}` : "builder"
+        } = new EmbedBuilder()`
+      );
+      for (let key in item) {
         if (fields[key]) {
-          result.push(fields[key](data.embed[key]));
+          result.push(fields[key](item[key]));
         }
       }
       result[result.length - 1] += ";";
+      if (!isWebhook) result.push("var embed = builder.Build();");
 
-      result.push("var embed = builder.Build();");
-      result.push(
-        `await Context.Channel.SendMessageAsync(\n\t${
+      embeds.push(result.join("\n"));
+    });
+    if (!isWebhook) {
+      const final = [...embeds];
+
+      if (embeds.length !== 0) {
+        final.push(
+          `await Context.Channel.SendMessageAsync(\n\t${
+            data.content ? JSON.stringify(data.content) : "null"
+          },\n\tembed: embed)\n\t.ConfigureAwait(false);`
+        );
+
+        return final.join("\n");
+      } else {
+        return `await Context.Channel.SendMessageAsync(${
           data.content ? JSON.stringify(data.content) : "null"
-        },\n\tembed: embed)\n\t.ConfigureAwait(false);`
-      );
-
-      return result.join("\n");
-    } else {
-      return `await Context.Channel.SendMessageAsync(${
-        data.content ? JSON.stringify(data.content) : "null"
-      })\n\t.ConfigureAwait(false);`;
+        })\n\t.ConfigureAwait(false);`;
+      }
     }
+    return ` using (var client = new DiscordWebhookClient("https://discord.com/api/webhooks/123/abc123"))
+{
+        ${embeds.join("\n\n        ")}
+        await client.SendMessageAsync(text: ${
+          data.content ? JSON.stringify(data.content) : "null"
+        }, embeds: new[] { ${Array(embeds.length)
+      .fill()
+      .map((_, index) => `builder${index + 1}.Build()`)
+      .join(", ")} });
+}`;
   },
 };

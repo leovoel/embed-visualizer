@@ -19,107 +19,118 @@ function toTitleCase(s) {
 export default {
   name: "discord.py (Python)",
   language: "python",
-  generateFrom(data) {
-    // TODO: minimize JSON.stringify?
-    // this is kind of stupid as-is
+  webhook_support: true,
+  generateFrom(data, isWebHook) {
+    const embeds = [];
+    const toIterate = isWebHook ? data.embeds || [] : [data.embed];
 
-    const result = [];
+    toIterate.forEach((item, index) => {
+      const result = [];
 
-    if (data.embed) {
-      // TODO: don't duplicate this kind of parsing
-      let timestamp = Moment(
-        data.embed.timestamp !== undefined ? data.embed.timestamp : null
-      );
-      timestamp = timestamp.isValid() ? timestamp.unix() : null;
+      if (item) {
+        // TODO: don't duplicate this kind of parsing
+        let timestamp = Moment(
+          item.timestamp !== undefined ? item.timestamp : null
+        );
+        timestamp = timestamp.isValid() ? timestamp.unix() : null;
 
-      const args = {
-        title: data.embed.title ? JSON.stringify(data.embed.title) : null,
-        colour: data.embed.color
-          ? `discord.Colour(0x${data.embed.color.toString(16)})`
-          : null,
-        url: data.embed.url ? JSON.stringify(data.embed.url) : null,
-        description: data.embed.description
-          ? JSON.stringify(data.embed.description)
-          : null,
-        timestamp: timestamp
-          ? `datetime.datetime.utcfromtimestamp(${timestamp})`
-          : null,
-      };
-
-      result.push(`embed = discord.Embed(${pythonKwargs(args)})`);
-
-      if (
-        data.embed.image ||
-        data.embed.thumbnail ||
-        data.embed.author ||
-        data.embed.footer
-      ) {
-        result.push("");
-      }
-
-      if (data.embed.image) {
-        const image = data.embed.image;
-        const args = { url: image.url ? JSON.stringify(image.url) : null };
-        result.push(`embed.set_image(${pythonKwargs(args)})`);
-      }
-
-      if (data.embed.thumbnail) {
-        const thumbnail = data.embed.thumbnail;
         const args = {
-          url: thumbnail.url ? JSON.stringify(thumbnail.url) : null,
-        };
-        result.push(`embed.set_thumbnail(${pythonKwargs(args)})`);
-      }
-
-      if (data.embed.author) {
-        const author = data.embed.author;
-        const args = {
-          name: author.name ? JSON.stringify(author.name) : null,
-          url: author.url ? JSON.stringify(author.url) : null,
-          icon_url: author.icon_url ? JSON.stringify(author.icon_url) : null,
-        };
-        result.push(`embed.set_author(${pythonKwargs(args)})`);
-      }
-
-      if (data.embed.footer) {
-        const args = {
-          text: data.embed.footer.text
-            ? JSON.stringify(data.embed.footer.text)
+          title: item.title ? JSON.stringify(item.title) : null,
+          colour: item.color
+            ? `discord.Colour(0x${item.color.toString(16)})`
             : null,
-          icon_url: data.embed.footer.icon_url
-            ? JSON.stringify(data.embed.footer.icon_url)
+          url: item.url ? JSON.stringify(item.url) : null,
+          description: item.description
+            ? JSON.stringify(item.description)
+            : null,
+          timestamp: timestamp
+            ? `datetime.datetime.utcfromtimestamp(${timestamp})`
             : null,
         };
+        const embedName = isWebHook ? `embed${index + 1}` : "embed";
+        result.push(`${embedName} = discord.Embed(${pythonKwargs(args)})`);
 
-        result.push(`embed.set_footer(${pythonKwargs(args)})`);
-      }
+        if (item.image || item.thumbnail || item.author || item.footer) {
+          result.push("");
+        }
 
-      if (data.embed.fields) {
-        result.push("");
-        for (const field of data.embed.fields) {
+        if (item.image) {
+          const image = item.image;
+          const args = { url: image.url ? JSON.stringify(image.url) : null };
+          result.push(`${embedName}.set_image(${pythonKwargs(args)})`);
+        }
+
+        if (item.thumbnail) {
+          const thumbnail = item.thumbnail;
           const args = {
-            name: field.name ? JSON.stringify(field.name) : null,
-            value: field.value ? JSON.stringify(field.value) : null,
-            inline:
-              field.inline !== undefined
-                ? toTitleCase(field.inline.toString())
-                : null,
+            url: thumbnail.url ? JSON.stringify(thumbnail.url) : null,
           };
-          result.push(`embed.add_field(${pythonKwargs(args)})`);
+          result.push(`${embedName}.set_thumbnail(${pythonKwargs(args)})`);
+        }
+
+        if (item.author) {
+          const author = item.author;
+          const args = {
+            name: author.name ? JSON.stringify(author.name) : null,
+            url: author.url ? JSON.stringify(author.url) : null,
+            icon_url: author.icon_url ? JSON.stringify(author.icon_url) : null,
+          };
+          result.push(`${embedName}.set_author(${pythonKwargs(args)})`);
+        }
+
+        if (item.footer) {
+          const args = {
+            text: item.footer.text ? JSON.stringify(item.footer.text) : null,
+            icon_url: item.footer.icon_url
+              ? JSON.stringify(item.footer.icon_url)
+              : null,
+          };
+
+          result.push(`${embedName}.set_footer(${pythonKwargs(args)})`);
+        }
+
+        if (item.fields) {
+          for (const field of item.fields) {
+            const args = {
+              name: field.name ? JSON.stringify(field.name) : null,
+              value: field.value ? JSON.stringify(field.value) : null,
+              inline:
+                field.inline !== undefined
+                  ? toTitleCase(field.inline.toString())
+                  : null,
+            };
+            result.push(`${embedName}.add_field(${pythonKwargs(args)})`);
+          }
         }
       }
-
       result.push("");
-    }
+      embeds.push(result.join("\n"));
+    });
 
-    if (data.content || data.embed) {
+    const final = [...embeds];
+    if (isWebHook) {
       const args = {
         content: data.content ? JSON.stringify(data.content) : null,
-        embed: data.embed ? "embed" : null,
+        embeds:
+          embeds.length > 0
+            ? `[${Array(embeds.length)
+                .fill()
+                .map((_, index) => `embed${index + 1}`)
+                .join(", ")}]`
+            : null,
       };
-      result.push(`await ctx.send(${pythonKwargs(args)})`);
+      final.push(
+        `webhook = Webhook.partial(123456, 'abcdefg', adapter=RequestsWebhookAdapter())`
+      );
+      final.push(`webhook.send(${pythonKwargs(args)})`);
+    } else if (data.content || data.embed) {
+      const args = {
+        content: data.content ? JSON.stringify(data.content) : null,
+        embed: embeds[0] ? "embed" : null,
+      };
+      final.push(`await ctx.send(${pythonKwargs(args)})`);
     }
 
-    return result.join("\n");
+    return final.join("\n");
   },
 };

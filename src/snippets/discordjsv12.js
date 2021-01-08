@@ -4,8 +4,6 @@ export default {
   language: "javascript",
   webhook_support: true,
   generateFrom(data, isWebhook) {
-    if (!data.embed && !data.embeds && data.content)
-      return `channel.send(${JSON.stringify(data.content)})`;
     const embeds = [];
     const toIterate = isWebhook ? data.embeds || [] : [data.embed];
 
