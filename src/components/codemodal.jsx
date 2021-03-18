@@ -14,6 +14,7 @@ import restcord from '../snippets/restcord';
 import eris from '../snippets/eris';
 import discordrb from '../snippets/discordrb';
 import jda from '../snippets/jda';
+import discordphp from '../snippets/discordphp';
 
 
 const libraries = {
@@ -29,6 +30,7 @@ const libraries = {
   'ruby_discordrb': discordrb,
   'java_discord4j': discord4j,
   'java_jda': jda,
+  'php_discordphp': discordphp,
 };
 
 // TODO: check for localStorage availability?
