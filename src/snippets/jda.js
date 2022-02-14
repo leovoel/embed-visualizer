@@ -11,7 +11,7 @@ export default {
     }
 
     if (data.embed) {
-      result.push(`  .setEmbed(new EmbedBuilder()`);
+      result.push(`  .setEmbeds(new EmbedBuilder()`);
 
       if (data.embed.title) {
         const title = JSON.stringify(data.embed.title);
