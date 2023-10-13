@@ -80,7 +80,7 @@ export default {
           const args = {
             name: field.name ? JSON.stringify(field.name) : null,
             value: field.value ? JSON.stringify(field.value) : null,
-            inline: field.inline !== undefined ? toTitleCase(field.inline.toString()) : null
+            inline: field.inline !== undefined ? toTitleCase(field.inline.toString()) : toTitleCase("False")
           };
           result.push(`embed.add_field(${pythonKwargs(args)})`);
         }
